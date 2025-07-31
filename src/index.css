@@ -8,44 +8,45 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 220 15% 9%;
+    /* Campfire-inspired Design System */
+    --background: 195 100% 7%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 9%;
+    --card: 195 100% 8%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 9%;
+    --popover: 195 100% 8%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 140 100% 28%;
-    --primary-foreground: 0 0% 98%;
-    --primary-glow: 35 100% 55%;
-    --primary-dark: 158 85% 15%;
+    --primary: 90 60% 60%;
+    --primary-foreground: 195 100% 7%;
+    --primary-glow: 90 70% 70%;
 
-    --secondary: 210 40% 98%;
-    --secondary-foreground: 220 15% 9%;
+    --secondary: 195 100% 10%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 210 40% 98%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 195 50% 15%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 35 100% 55%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 140 100% 28%;
+    --border: 195 50% 15%;
+    --input: 195 50% 15%;
+    --ring: 90 60% 60%;
 
-    /* FursaAI Modern Design Tokens */
-    --gradient-hero: linear-gradient(135deg, hsl(158 85% 15%) 0%, hsl(140 100% 28%) 50%, hsl(35 100% 55%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(35 100% 55%) 0%, hsl(25 100% 65%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 98%) 0%, hsl(210 40% 98%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(210 40% 99%) 100%);
-    --shadow-glow: 0 20px 60px hsl(35 100% 55% / 0.3);
-    --shadow-elegant: 0 25px 50px -12px hsl(220 15% 9% / 0.25);
-    --shadow-card: 0 4px 20px hsl(220 15% 9% / 0.08);
+    /* Campfire Design Tokens */
+    --gradient-hero: linear-gradient(135deg, hsl(195 100% 7%) 0%, hsl(180 100% 8%) 50%, hsl(195 100% 10%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(25 100% 60%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(195 100% 8%) 0%, hsl(195 50% 15%) 100%);
+    --gradient-orange: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(25 100% 60%) 100%);
+    --gradient-radial: radial-gradient(circle at center, hsl(25 95% 53% / 0.3) 0%, hsl(25 95% 53% / 0.1) 50%, transparent 100%);
+    --shadow-glow: 0 20px 60px hsl(90 60% 60% / 0.3);
+    --shadow-elegant: 0 25px 50px -12px hsl(0 0% 0% / 0.5);
+    --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.3);
 
     --radius: 1rem;
 

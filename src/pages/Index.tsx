@@ -17,7 +17,9 @@ import {
   PlayCircle,
   TrendingUp,
   Clock,
-  Target
+  Target,
+  Menu,
+  ChevronDown
 } from "lucide-react";
 import { useEffect } from "react";
 
@@ -43,452 +45,442 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Orange Notification Bar */}
+      <div className="bg-accent text-accent-foreground py-3 px-6 text-center relative">
+        <div className="container mx-auto flex items-center justify-center">
+          <span className="text-sm font-medium">FursaAI raises $35M Series A led by Accel. Discover what's next.</span>
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </div>
+      </div>
+
       {/* Navigation Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
+      <header className="bg-background border-b border-border/20">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="relative">
-              <Bot className="h-8 w-8 text-primary animate-pulse" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-ping"></div>
-            </div>
-            <span className="text-2xl font-bold bg-[var(--gradient-hero)] bg-clip-text text-transparent">
-              FursaAI
-            </span>
+            <Bot className="h-8 w-8 text-accent" />
+            <span className="text-2xl font-bold text-foreground">FursaAI</span>
           </div>
+          
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-muted-foreground hover:text-primary transition-colors duration-300">Features</a>
-            <a href="#how-it-works" className="text-muted-foreground hover:text-primary transition-colors duration-300">How It Works</a>
-            <a href="#pricing" className="text-muted-foreground hover:text-primary transition-colors duration-300">Pricing</a>
-            <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors duration-300">Contact</a>
+            <div className="flex items-center space-x-1 text-foreground hover:text-primary cursor-pointer">
+              <span>Products</span>
+              <ChevronDown className="h-4 w-4" />
+            </div>
+            <div className="flex items-center space-x-1 text-foreground hover:text-primary cursor-pointer">
+              <span>Solutions</span>
+              <ChevronDown className="h-4 w-4" />
+            </div>
+            <a href="#customers" className="text-foreground hover:text-primary">Customers</a>
+            <div className="flex items-center space-x-1 text-foreground hover:text-primary cursor-pointer">
+              <span>Resources</span>
+              <ChevronDown className="h-4 w-4" />
+            </div>
           </nav>
-          <Button className="modern-button bg-primary hover:bg-primary/90 text-primary-foreground px-6">
-            Sign In
-          </Button>
+          
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" className="text-foreground hover:text-primary">
+              Log in
+            </Button>
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6">
+              Get Started
+            </Button>
+          </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0">
-          <div className="organic-shape organic-shape-1 animate-morph animate-float"></div>
-          <div className="organic-shape organic-shape-2 animate-morph animate-float-reverse"></div>
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-accent rounded-full animate-ping"></div>
-          <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-primary rounded-full animate-pulse"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-accent/30 rounded-full animate-bounce"></div>
-        </div>
-
-        <div className="container mx-auto px-6 pt-20 relative z-10">
-          <div className="text-center max-w-6xl mx-auto">
-            <Badge variant="secondary" className="mb-8 text-sm px-6 py-3 bg-accent/10 text-accent border-accent/20 animate-fade-up">
-              <Zap className="w-4 h-4 mr-2 animate-pulse" />
-              AI-Powered WhatsApp Automation
-            </Badge>
-            
-            <h1 className="text-6xl lg:text-8xl font-bold mb-8 leading-tight animate-fade-up" style={{ animationDelay: '0.2s' }}>
-              <span className="block">Transform Your</span>
-              <span className="block bg-[var(--gradient-hero)] bg-clip-text text-transparent animate-gradient">
-                WhatsApp Business
-              </span>
-            </h1>
-            
-            <p className="text-xl lg:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-up" style={{ animationDelay: '0.4s' }}>
-              Connect your WhatsApp, automate conversations, and scale your business with intelligent AI workflows powered by n8n. 
-              <span className="text-primary font-semibold">No coding required.</span>
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-fade-up" style={{ animationDelay: '0.6s' }}>
-              <Button 
-                size="lg" 
-                className="modern-button bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-10 py-6 rounded-2xl shadow-[var(--shadow-glow)] hover:shadow-[var(--shadow-elegant)] transition-all duration-300 hover:scale-105"
-              >
-                Get Started Free
-                <ArrowRight className="ml-3 h-6 w-6" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="text-lg px-10 py-6 rounded-2xl border-2 border-primary/20 hover:border-primary hover:bg-primary/5 transition-all duration-300"
-              >
-                <PlayCircle className="mr-3 h-6 w-6" />
-                Watch Demo
-              </Button>
-            </div>
-
-            {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground animate-fade-up" style={{ animationDelay: '0.8s' }}>
-              <div className="flex items-center">
-                <Check className="h-5 w-5 mr-2 text-primary" />
-                Free 14-day trial
-              </div>
-              <div className="flex items-center">
-                <Check className="h-5 w-5 mr-2 text-primary" />
-                No credit card required
-              </div>
-              <div className="flex items-center">
-                <Check className="h-5 w-5 mr-2 text-primary" />
-                Setup in 5 minutes
-              </div>
-            </div>
+      <section className="relative min-h-screen bg-background overflow-hidden">
+        {/* Breadcrumb */}
+        <div className="container mx-auto px-6 pt-8">
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <span>It for Scale</span>
+            <span>•</span>
+            <span>Centralized Finance</span>
+            <span>•</span>
+            <span>Multi-Entity</span>
           </div>
         </div>
 
-        {/* Floating Dashboard Mockup */}
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 animate-float">
-          <div className="w-80 h-48 bg-[var(--gradient-card)] rounded-3xl shadow-[var(--shadow-elegant)] border border-border/50 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+        <div className="container mx-auto px-6 pt-16 pb-32">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <h1 className="text-6xl lg:text-7xl font-bold leading-tight">
+                  <span className="text-foreground">Close Fast.</span>
+                  <br />
+                  <span className="text-foreground">Scale </span>
+                  <span className="text-primary">Faster.</span>
+                </h1>
+                
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 py-6 text-lg">
+                  Get Started
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </div>
-              <div className="text-xs text-muted-foreground">FursaAI Dashboard</div>
-            </div>
-            <div className="space-y-3">
-              <div className="h-3 bg-primary/20 rounded-full w-3/4"></div>
-              <div className="h-3 bg-accent/20 rounded-full w-1/2"></div>
-              <div className="h-3 bg-primary/30 rounded-full w-5/6"></div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-32 bg-[var(--gradient-subtle)] relative">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-20 scroll-reveal">
-            <Badge variant="outline" className="mb-6 border-primary/20 text-primary">
-              <Star className="w-4 h-4 mr-2" />
-              Powerful Features
-            </Badge>
-            <h2 className="text-5xl font-bold mb-6">Why Choose FursaAI?</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Everything you need to automate and scale your WhatsApp business communications with cutting-edge AI technology
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: MessageSquare,
-                title: "Smart Conversations",
-                description: "AI that understands context and responds naturally to customer inquiries 24/7 with human-like intelligence",
-                color: "text-primary",
-                delay: "0s"
-              },
-              {
-                icon: Workflow,
-                title: "Visual Automation",
-                description: "Drag-and-drop workflow builder powered by n8n - create complex automations without any coding experience",
-                color: "text-accent",
-                delay: "0.1s"
-              },
-              {
-                icon: Smartphone,
-                title: "WhatsApp Integration",
-                description: "Seamless connection to WhatsApp Business API with one-click setup and instant synchronization",
-                color: "text-primary",
-                delay: "0.2s"
-              },
-              {
-                icon: BarChart3,
-                title: "Analytics & Insights",
-                description: "Track performance, monitor conversations, and optimize your automation with real-time analytics",
-                color: "text-accent",
-                delay: "0.3s"
-              },
-              {
-                icon: Users,
-                title: "Multi-Agent Support",
-                description: "Handle multiple conversations simultaneously with intelligent routing and load balancing",
-                color: "text-primary",
-                delay: "0.4s"
-              },
-              {
-                icon: Shield,
-                title: "Enterprise Security",
-                description: "Bank-level encryption and compliance with international data protection standards and regulations",
-                color: "text-accent",
-                delay: "0.5s"
-              }
-            ].map((feature, index) => (
-              <Card 
-                key={index} 
-                className="scroll-reveal relative overflow-hidden group hover:shadow-[var(--shadow-elegant)] transition-all duration-500 hover:scale-105 bg-[var(--gradient-card)] border-border/50"
-                style={{ animationDelay: feature.delay }}
-              >
-                <CardHeader className="pb-4">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${feature.color}`}>
-                    <feature.icon className="h-8 w-8" />
+              <div className="space-y-4">
+                <p className="text-xl text-foreground leading-relaxed">
+                  <span className="text-primary font-semibold">FursaAI</span> is the AI-first ERP powering next-gen finance & accounting teams. General ledger, 
+                  revenue automation, close management, and so much more—all on one unified platform.
+                </p>
+                
+                <p className="text-muted-foreground">
+                  Trusted by mid-market and enterprise leaders
+                </p>
+              </div>
+            </div>
+
+            {/* Dashboard Mockup */}
+            <div className="relative">
+              <div className="relative bg-card rounded-3xl shadow-2xl overflow-hidden">
+                {/* Revenue Card */}
+                <div className="absolute top-8 right-8 bg-card rounded-2xl p-6 shadow-lg border border-border/20 w-64">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 bg-muted rounded-full"></div>
+                    <div className="text-right">
+                      <div className="text-sm text-muted-foreground">Revenue</div>
+                      <div className="text-2xl font-bold text-foreground">$956K</div>
+                    </div>
                   </div>
-                  <CardTitle className="text-xl font-bold">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base leading-relaxed text-muted-foreground">
-                    {feature.description}
-                  </CardDescription>
-                </CardContent>
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-accent/5 to-transparent rounded-bl-full"></div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section id="how-it-works" className="py-32 relative">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-20 scroll-reveal">
-            <Badge variant="outline" className="mb-6 border-accent/20 text-accent">
-              <Clock className="w-4 h-4 mr-2" />
-              Quick Setup
-            </Badge>
-            <h2 className="text-5xl font-bold mb-6">Get Started in Minutes</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Simple setup process that gets you running in no time with our intuitive onboarding
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
-            {[
-              {
-                step: "01",
-                title: "Connect WhatsApp",
-                description: "Link your WhatsApp Business account with our secure integration in just a few clicks using our guided setup wizard",
-                icon: Smartphone
-              },
-              {
-                step: "02", 
-                title: "Design Workflows",
-                description: "Use our visual editor to create intelligent automation workflows without any coding using drag-and-drop interface",
-                icon: Workflow
-              },
-              {
-                step: "03",
-                title: "Go Live",
-                description: "Activate your AI assistant and watch it handle conversations automatically while you focus on growing your business",
-                icon: TrendingUp
-              }
-            ].map((step, index) => (
-              <div key={index} className="text-center relative scroll-reveal" style={{ animationDelay: `${index * 0.2}s` }}>
-                <div className="relative mb-8">
-                  <div className="w-24 h-24 rounded-3xl bg-[var(--gradient-hero)] text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto shadow-[var(--shadow-glow)] animate-float">
-                    {step.step}
-                  </div>
-                  <div className="absolute -bottom-2 -right-2 w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center">
-                    <step.icon className="h-6 w-6 text-accent" />
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">VP of Finance</span>
+                      <span className="text-primary">+ 20%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full">
+                      <div className="h-2 bg-primary rounded-full w-3/4"></div>
+                    </div>
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold mb-4">{step.title}</h3>
-                <p className="text-muted-foreground leading-relaxed text-lg">{step.description}</p>
-                {index < 2 && (
-                  <ArrowRight className="hidden lg:block absolute top-12 -right-6 h-8 w-8 text-muted-foreground/30 animate-pulse" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Stats Section */}
-      <section className="py-32 bg-[var(--gradient-subtle)] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-40 h-40 bg-primary rounded-full animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-60 h-60 bg-accent rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
-        </div>
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-16 scroll-reveal">
-            <h2 className="text-4xl font-bold mb-4">Trusted by Growing Businesses</h2>
-            <p className="text-xl text-muted-foreground">Join thousands of companies already using FursaAI</p>
-          </div>
-          
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            {[
-              { number: "10,000+", label: "Active Users", icon: Users },
-              { number: "1M+", label: "Messages Processed", icon: MessageSquare },
-              { number: "99.9%", label: "Uptime", icon: Shield },
-              { number: "5min", label: "Average Setup", icon: Clock }
-            ].map((stat, index) => (
-              <div key={index} className="scroll-reveal" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-8 hover:scale-105 transition-transform duration-300">
-                  <stat.icon className="h-8 w-8 text-primary mx-auto mb-4" />
-                  <div className="text-4xl font-bold text-primary mb-2">{stat.number}</div>
-                  <div className="text-muted-foreground">{stat.label}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-32">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-20 scroll-reveal">
-            <Badge variant="outline" className="mb-6 border-primary/20 text-primary">
-              <Star className="w-4 h-4 mr-2" />
-              Customer Stories
-            </Badge>
-            <h2 className="text-5xl font-bold mb-6">Loved by Businesses Worldwide</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              See what our customers are saying about their experience with FursaAI
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Sarah Johnson",
-                role: "E-commerce Manager",
-                company: "TechStore",
-                content: "FursaAI transformed our customer service completely. We're now handling 5x more inquiries with better response times and higher satisfaction.",
-                rating: 5,
-                avatar: "SJ"
-              },
-              {
-                name: "Miguel Rodriguez",
-                role: "Operations Director", 
-                company: "FastDelivery",
-                content: "The automation workflows are incredible. Our team can focus on complex issues while AI handles routine questions perfectly.",
-                rating: 5,
-                avatar: "MR"
-              },
-              {
-                name: "Priya Patel",
-                role: "Marketing Head",
-                company: "GrowthLab",
-                content: "Setting up was surprisingly easy. Within an hour, we had intelligent responses running for our WhatsApp campaigns with amazing results.",
-                rating: 5,
-                avatar: "PP"
-              }
-            ].map((testimonial, index) => (
-              <Card key={index} className="scroll-reveal relative bg-[var(--gradient-card)] border-border/50 hover:shadow-[var(--shadow-elegant)] transition-all duration-300 hover:scale-105" style={{ animationDelay: `${index * 0.2}s` }}>
-                <CardHeader>
-                  <div className="flex items-center space-x-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-accent text-accent" />
+                {/* Cash Flow Chart */}
+                <div className="absolute bottom-8 left-8 bg-card rounded-2xl p-6 shadow-lg border border-border/20 w-80">
+                  <div className="mb-4">
+                    <div className="text-sm text-muted-foreground">Cash Flow</div>
+                    <div className="text-primary font-semibold">+ 9.8%</div>
+                  </div>
+                  <div className="grid grid-cols-6 gap-2 h-16 items-end">
+                    {[60, 80, 40, 90, 70, 85].map((height, i) => (
+                      <div key={i} className="bg-primary rounded-t" style={{height: `${height}%`}}></div>
                     ))}
                   </div>
-                  <CardDescription className="text-base italic leading-relaxed text-foreground">
-                    "{testimonial.content}"
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-2xl bg-[var(--gradient-hero)] flex items-center justify-center text-primary-foreground font-bold">
-                      {testimonial.avatar}
-                    </div>
-                    <div>
-                      <p className="font-semibold">{testimonial.name}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.role} at {testimonial.company}</p>
+                </div>
+
+                {/* Main Dashboard */}
+                <div className="p-8 bg-gradient-to-br from-background to-card min-h-96">
+                  <div className="space-y-6">
+                    <div className="h-4 bg-muted rounded w-1/3"></div>
+                    <div className="space-y-3">
+                      <div className="h-3 bg-muted/60 rounded w-2/3"></div>
+                      <div className="h-3 bg-muted/60 rounded w-1/2"></div>
+                      <div className="h-3 bg-muted/60 rounded w-3/4"></div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-32 relative overflow-hidden bg-[var(--gradient-hero)]">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-6xl font-bold mb-8 text-white">
-              Ready to Transform Your Business?
-            </h2>
-            <p className="text-xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Join thousands of businesses already using FursaAI to automate their WhatsApp communications and scale their operations
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-              <Button 
-                size="lg" 
-                className="modern-button bg-white text-primary hover:bg-white/90 text-lg px-10 py-6 rounded-2xl font-semibold hover:scale-105 transition-all duration-300"
-              >
-                Start Your Free Trial
-                <ArrowRight className="ml-3 h-6 w-6" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="text-lg px-10 py-6 rounded-2xl border-2 border-white/30 text-white hover:bg-white/10 transition-all duration-300"
-              >
-                Schedule Demo
-              </Button>
+      {/* Product Demo Section */}
+      <section className="py-32 bg-card">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Circular Orange Background */}
+            <div className="relative">
+              <div className="w-96 h-96 mx-auto relative">
+                <div className="absolute inset-0 bg-gradient-radial rounded-full opacity-20"></div>
+                <div className="absolute inset-8 bg-gradient-to-br from-accent/30 to-accent/10 rounded-full"></div>
+                <div className="absolute inset-16 bg-gradient-to-br from-accent/20 to-accent/5 rounded-full"></div>
+                <div className="absolute inset-24 bg-background rounded-full flex items-center justify-center">
+                  <div className="w-32 h-20 bg-muted rounded-lg"></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-8">
+              <div className="flex space-x-4 border-b border-border/20">
+                <button className="pb-4 border-b-2 border-muted-foreground text-muted-foreground">
+                  Core Accounting
+                </button>
+                <button className="pb-4 border-b-2 border-foreground text-foreground font-semibold">
+                  Revenue Automation
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <h2 className="text-5xl font-bold text-foreground">
+                  Revenue AI
+                </h2>
+                
+                <p className="text-xl text-foreground leading-relaxed">
+                  Automate your revenue accounting, reporting and invoicing with FursaAI. It 
+                  seamlessly unifies revenue and customer data across sources, and supports a 
+                  variety of business models from enterprise software to consumer fintech.
+                </p>
+
+                <div className="space-y-4">
+                  <p className="text-muted-foreground">
+                    Ideal for: Teams that are manually performing revenue accounting and reporting in 
+                    spreadsheets.
+                  </p>
+                  
+                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8">
+                    See Revenue Automation
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process Automation Section */}
+      <section className="py-32 bg-background">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <div className="w-16 h-16 rounded-full bg-accent flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-accent-foreground"></div>
+                </div>
+                
+                <h2 className="text-5xl font-bold text-foreground">
+                  Accelerate your close process
+                </h2>
+                
+                <p className="text-xl text-foreground leading-relaxed">
+                  Automate and streamline accounting tasks to shorten your close process, elevating accounting 
+                  teams from data entry to data manager.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <Card className="bg-card/50 border border-border/20 rounded-3xl p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <Check className="w-4 h-4 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground">Stock Option Exercise</div>
+                      <div className="text-sm text-muted-foreground">6/5/24</div>
+                    </div>
+                  </div>
+                  <Badge className="bg-primary/10 text-primary border-primary/20">Active</Badge>
+                </div>
+              </Card>
+
+              <Card className="bg-card/50 border border-border/20 rounded-3xl p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <Check className="w-4 h-4 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground">Close Accounting Period</div>
+                      <div className="text-sm text-muted-foreground">6/5/24</div>
+                    </div>
+                  </div>
+                  <Badge className="bg-primary/10 text-primary border-primary/20">Active</Badge>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Analytics Section */}
+      <section className="py-32 bg-card">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <h2 className="text-5xl font-bold text-foreground">
+                See the forest, not the trees.
+              </h2>
+              
+              <p className="text-xl text-foreground leading-relaxed">
+                Unlock actionable and timely KPI's and financial insights with advanced financial reporting for 
+                increased visibility. Empowering executives to make informed, timely decisions.
+              </p>
+            </div>
+
+            <div className="relative">
+              <div className="grid grid-cols-2 gap-4">
+                {/* Revenue Card */}
+                <Card className="bg-primary/10 border border-primary/20 rounded-2xl p-6">
+                  <div className="space-y-4">
+                    <div className="text-3xl font-bold text-foreground">$7M</div>
+                    <div className="text-sm text-primary">+ 5%</div>
+                    <div className="h-12 flex items-end space-x-1">
+                      {[40, 60, 45, 80, 70, 90].map((height, i) => (
+                        <div key={i} className="bg-primary/60 rounded-t flex-1" style={{height: `${height}%`}}></div>
+                      ))}
+                    </div>
+                  </div>
+                </Card>
+
+                {/* ARR Card */}
+                <Card className="bg-card border border-border/20 rounded-2xl p-6">
+                  <div className="space-y-4">
+                    <div className="text-sm text-muted-foreground">ARR</div>
+                    <div className="text-3xl font-bold text-foreground">$36M</div>
+                    <div className="text-sm text-primary">+ 10%</div>
+                    <div className="h-8 flex items-end">
+                      <div className="bg-primary rounded w-full h-2"></div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Deferred Revenue */}
+                <Card className="bg-card border border-border/20 rounded-2xl p-6">
+                  <div className="space-y-4">
+                    <div className="text-sm text-muted-foreground">Deferred Revenue</div>
+                    <div className="text-3xl font-bold text-foreground">$91K</div>
+                    <div className="text-sm text-red-400">- 7%</div>
+                    <div className="h-8 flex items-center">
+                      <div className="bg-red-400 rounded w-2/3 h-1"></div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Gross Churn */}
+                <Card className="bg-card border border-border/20 rounded-2xl p-6">
+                  <div className="space-y-4">
+                    <div className="text-sm text-muted-foreground">Gross Churn</div>
+                    <div className="text-3xl font-bold text-foreground">$890</div>
+                    <div className="text-sm text-red-400">- 7%</div>
+                    <div className="h-8 flex items-center">
+                      <div className="bg-red-400 rounded w-1/2 h-1"></div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Customers */}
+                <Card className="bg-card border border-border/20 rounded-2xl p-6 col-span-2">
+                  <div className="text-sm text-muted-foreground mb-2">Customers</div>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Solutions Section */}
+      <section className="py-32 bg-background">
+        <div className="container mx-auto px-6">
+          {/* Mid-Market Tab */}
+          <div className="bg-card rounded-3xl p-16 mb-8 relative overflow-hidden">
+            <div className="absolute top-8 left-8">
+              <Badge className="bg-muted text-muted-foreground">Solutions</Badge>
             </div>
             
-            <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-white/80">
-              <div className="flex items-center">
-                <Check className="h-5 w-5 mr-2 text-white" />
-                Free 14-day trial
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div className="space-y-8">
+                <div className="space-y-6">
+                  <h2 className="text-5xl font-bold text-foreground">
+                    Built for your next stage of{" "}
+                    <span className="text-primary">growth.</span>
+                  </h2>
+                  
+                  <p className="text-xl text-foreground leading-relaxed">
+                    The next-gen financial platform powering modern companies.
+                  </p>
+                </div>
+
+                <div className="flex space-x-2">
+                  <button className="bg-primary text-primary-foreground px-6 py-2 rounded-full font-semibold">
+                    Mid-Market
+                  </button>
+                  <button className="text-muted-foreground px-6 py-2 rounded-full">
+                    Enterprise
+                  </button>
+                  <button className="text-muted-foreground px-6 py-2 rounded-full">
+                    Partners
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center">
-                <Check className="h-5 w-5 mr-2 text-white" />
-                No credit card required
-              </div>
-              <div className="flex items-center">
-                <Check className="h-5 w-5 mr-2 text-white" />
-                Cancel anytime
-              </div>
+
+              <Card className="bg-background/50 border border-border/20 rounded-3xl p-8">
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground">Mid-Market</h3>
+                    <p className="text-muted-foreground">Scale with confidence</p>
+                  </div>
+
+                  <div className="grid grid-cols-5 gap-2">
+                    {Array.from({length: 25}).map((_, i) => (
+                      <div key={i} className="w-4 h-4">
+                        <ArrowRight className="w-full h-full text-muted-foreground/20" />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-4">
+                    <p className="text-foreground leading-relaxed">
+                      The power of an ERP with none of the legacy baggage. FursaAI gives mid-market finance & accounting teams an 
+                      intuitive platform for audit-readiness, multi-entity consolidations, close management, and financial reporting. 
+                      Everything you need for your next phase of growth, on a platform you'll actually enjoy using.
+                    </p>
+
+                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8">
+                      For Mid-Market
+                    </Button>
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-primary-dark text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-dark via-primary to-accent opacity-90"></div>
-        <div className="container mx-auto px-6 py-16 relative z-10">
+      <footer className="bg-card border-t border-border/20 py-16">
+        <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-3 mb-6">
-                <Bot className="h-8 w-8 text-accent" />
-                <span className="text-2xl font-bold">FursaAI</span>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Bot className="h-6 w-6 text-accent" />
+                <span className="text-xl font-bold text-foreground">FursaAI</span>
               </div>
-              <p className="text-white/80 text-lg leading-relaxed mb-6 max-w-md">
-                AI-powered WhatsApp automation that scales your business communications intelligently and efficiently.
+              <p className="text-muted-foreground">
+                The AI-first ERP powering next-gen finance & accounting teams.
               </p>
-              <div className="flex space-x-4">
-                <Button variant="outline" size="sm" className="border-white/20 text-white hover:bg-white/10">
-                  <Globe className="h-4 w-4 mr-2" />
-                  English
-                </Button>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="font-semibold text-foreground">Product</h4>
+              <div className="space-y-2">
+                <a href="#" className="block text-muted-foreground hover:text-foreground">Features</a>
+                <a href="#" className="block text-muted-foreground hover:text-foreground">Pricing</a>
+                <a href="#" className="block text-muted-foreground hover:text-foreground">Security</a>
               </div>
             </div>
-            
-            <div>
-              <h4 className="font-semibold mb-6 text-lg">Product</h4>
-              <ul className="space-y-3 text-white/80">
-                <li><a href="#" className="hover:text-accent transition-colors duration-300">Features</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors duration-300">Pricing</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors duration-300">API</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors duration-300">Integrations</a></li>
-              </ul>
+
+            <div className="space-y-4">
+              <h4 className="font-semibold text-foreground">Company</h4>
+              <div className="space-y-2">
+                <a href="#" className="block text-muted-foreground hover:text-foreground">About</a>
+                <a href="#" className="block text-muted-foreground hover:text-foreground">Blog</a>
+                <a href="#" className="block text-muted-foreground hover:text-foreground">Careers</a>
+              </div>
             </div>
-            
-            <div>
-              <h4 className="font-semibold mb-6 text-lg">Support</h4>
-              <ul className="space-y-3 text-white/80">
-                <li><a href="#" className="hover:text-accent transition-colors duration-300">Help Center</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors duration-300">Documentation</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors duration-300">Status</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors duration-300">Security</a></li>
-              </ul>
+
+            <div className="space-y-4">
+              <h4 className="font-semibold text-foreground">Support</h4>
+              <div className="space-y-2">
+                <a href="#" className="block text-muted-foreground hover:text-foreground">Help Center</a>
+                <a href="#" className="block text-muted-foreground hover:text-foreground">Contact</a>
+                <a href="#" className="block text-muted-foreground hover:text-foreground">Status</a>
+              </div>
             </div>
           </div>
-          
-          <div className="border-t border-white/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-white/60">
-              © 2024 FursaAI. All rights reserved.
-            </p>
-            <div className="flex items-center space-x-6 mt-4 md:mt-0">
-              <Target className="h-5 w-5 text-accent" />
-              <span className="text-white/60">Built for the future of business communication</span>
-            </div>
+
+          <div className="border-t border-border/20 mt-12 pt-8 text-center text-muted-foreground">
+            <p>&copy; 2024 FursaAI. All rights reserved.</p>
           </div>
         </div>
       </footer>
