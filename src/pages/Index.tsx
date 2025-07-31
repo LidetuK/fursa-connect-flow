@@ -104,30 +104,45 @@ const Index = () => {
 
         <div className="container mx-auto px-6 pt-16 pb-32">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
+            <div className="space-y-8 scroll-reveal">
               <div className="space-y-6">
-                <h1 className="text-6xl lg:text-7xl font-bold leading-tight">
-                  <span className="text-foreground">Close Fast.</span>
+                <h1 className="text-6xl lg:text-7xl font-bold leading-tight animate-fade-up">
+                  <span className="text-foreground">Qualify Leads</span>
                   <br />
-                  <span className="text-foreground">Scale </span>
-                  <span className="text-primary">Faster.</span>
+                  <span className="text-foreground">While You </span>
+                  <span className="text-primary">Sleep.</span>
                 </h1>
                 
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 py-6 text-lg">
-                  Get Started
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-
-              <div className="space-y-4">
-                <p className="text-xl text-foreground leading-relaxed">
-                  <span className="text-primary font-semibold">FursaAI</span> is the AI-first ERP powering next-gen finance & accounting teams. General ledger, 
-                  revenue automation, close management, and so much more—all on one unified platform.
+                <p className="text-xl text-foreground leading-relaxed animate-fade-up" style={{animationDelay: '0.2s'}}>
+                  <span className="text-primary font-semibold">FursaAI</span> helps you qualify leads automatically so your team can focus on closing, not chasing. 
+                  Respond instantly, filter serious buyers, and keep conversations warm 24/7.
                 </p>
                 
-                <p className="text-muted-foreground">
-                  Trusted by mid-market and enterprise leaders
-                </p>
+                <div className="flex flex-col sm:flex-row gap-4 animate-fade-up" style={{animationDelay: '0.4s'}}>
+                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 py-6 text-lg group">
+                    Get Started Free
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                  <Button variant="outline" className="rounded-full px-8 py-6 text-lg border-2 hover:bg-primary/10">
+                    <PlayCircle className="mr-2 h-5 w-5" />
+                    Watch Demo
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-4 animate-fade-up" style={{animationDelay: '0.6s'}}>
+                <div className="flex items-center space-x-2 text-muted-foreground">
+                  <Check className="h-4 w-4 text-primary" />
+                  <span>24/7 instant responses</span>
+                </div>
+                <div className="flex items-center space-x-2 text-muted-foreground">
+                  <Check className="h-4 w-4 text-primary" />
+                  <span>Multi-channel support</span>
+                </div>
+                <div className="flex items-center space-x-2 text-muted-foreground">
+                  <Check className="h-4 w-4 text-primary" />
+                  <span>Smart lead qualification</span>
+                </div>
               </div>
             </div>
 
@@ -184,108 +199,122 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Product Demo Section */}
-      <section className="py-32 bg-card">
+      {/* Multi-Channel Section */}
+      <section className="py-32 bg-card scroll-reveal">
         <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Circular Orange Background */}
-            <div className="relative">
-              <div className="w-96 h-96 mx-auto relative">
-                <div className="absolute inset-0 bg-gradient-radial rounded-full opacity-20"></div>
-                <div className="absolute inset-8 bg-gradient-to-br from-accent/30 to-accent/10 rounded-full"></div>
-                <div className="absolute inset-16 bg-gradient-to-br from-accent/20 to-accent/5 rounded-full"></div>
-                <div className="absolute inset-24 bg-background rounded-full flex items-center justify-center">
-                  <div className="w-32 h-20 bg-muted rounded-lg"></div>
-                </div>
-              </div>
-            </div>
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-bold text-foreground mb-6">
+              Available Where Your Customers Are
+            </h2>
+            <p className="text-xl text-foreground leading-relaxed max-w-3xl mx-auto">
+              No matter where your leads come from, Fursa AI is ready to engage and qualify them instantly.
+            </p>
+          </div>
 
-            <div className="space-y-8">
-              <div className="flex space-x-4 border-b border-border/20">
-                <button className="pb-4 border-b-2 border-muted-foreground text-muted-foreground">
-                  Core Accounting
-                </button>
-                <button className="pb-4 border-b-2 border-foreground text-foreground font-semibold">
-                  Revenue Automation
-                </button>
-              </div>
-
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="bg-background/50 border border-border/20 rounded-3xl p-8 hover:shadow-lg transition-all duration-300 hover:scale-105">
               <div className="space-y-6">
-                <h2 className="text-5xl font-bold text-foreground">
-                  Revenue AI
-                </h2>
-                
-                <p className="text-xl text-foreground leading-relaxed">
-                  Automate your revenue accounting, reporting and invoicing with FursaAI. It 
-                  seamlessly unifies revenue and customer data across sources, and supports a 
-                  variety of business models from enterprise software to consumer fintech.
-                </p>
-
-                <div className="space-y-4">
-                  <p className="text-muted-foreground">
-                    Ideal for: Teams that are manually performing revenue accounting and reporting in 
-                    spreadsheets.
-                  </p>
-                  
-                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8">
-                    See Revenue Automation
-                  </Button>
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Globe className="h-8 w-8 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground mb-2">Website Chat</h3>
+                  <p className="text-muted-foreground">Chat directly on your website with visitors in real-time</p>
                 </div>
               </div>
-            </div>
+            </Card>
+
+            <Card className="bg-background/50 border border-border/20 rounded-3xl p-8 hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="space-y-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <MessageSquare className="h-8 w-8 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground mb-2">Social Media</h3>
+                  <p className="text-muted-foreground">Connect with users on WhatsApp, Facebook, and Instagram</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="bg-background/50 border border-border/20 rounded-3xl p-8 hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="space-y-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Smartphone className="h-8 w-8 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground mb-2">Voice Calls</h3>
+                  <p className="text-muted-foreground">Answer voice calls with smart, natural conversations</p>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* Process Automation Section */}
-      <section className="py-32 bg-background">
+      {/* AI Understanding Section */}
+      <section className="py-32 bg-background scroll-reveal">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <div className="space-y-6">
-                <div className="w-16 h-16 rounded-full bg-accent flex items-center justify-center">
-                  <div className="w-8 h-8 rounded-full bg-accent-foreground"></div>
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Bot className="h-8 w-8 text-primary" />
                 </div>
                 
                 <h2 className="text-5xl font-bold text-foreground">
-                  Accelerate your close process
+                  AI That Understands People
                 </h2>
                 
                 <p className="text-xl text-foreground leading-relaxed">
-                  Automate and streamline accounting tasks to shorten your close process, elevating accounting 
-                  teams from data entry to data manager.
+                  Fursa AI doesn't just reply — it understands. It detects what your customers really need, 
+                  asks qualifying questions naturally, and routes hot leads to your sales team instantly.
                 </p>
+
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3">
+                    <Check className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                    <span className="text-foreground">Detects customer intent and needs</span>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Check className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                    <span className="text-foreground">Asks natural qualifying questions</span>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Check className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                    <span className="text-foreground">Routes hot leads instantly</span>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="space-y-6">
-              <Card className="bg-card/50 border border-border/20 rounded-3xl p-6">
+              <Card className="bg-card/50 border border-border/20 rounded-3xl p-6 hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                      <Check className="w-4 h-4 text-primary-foreground" />
+                      <MessageSquare className="w-4 h-4 text-primary-foreground" />
                     </div>
                     <div>
-                      <div className="font-semibold text-foreground">Stock Option Exercise</div>
-                      <div className="text-sm text-muted-foreground">6/5/24</div>
+                      <div className="font-semibold text-foreground">Lead Qualification</div>
+                      <div className="text-sm text-muted-foreground">Active conversation</div>
                     </div>
                   </div>
-                  <Badge className="bg-primary/10 text-primary border-primary/20">Active</Badge>
+                  <Badge className="bg-primary/10 text-primary border-primary/20">High Intent</Badge>
                 </div>
               </Card>
 
-              <Card className="bg-card/50 border border-border/20 rounded-3xl p-6">
+              <Card className="bg-card/50 border border-border/20 rounded-3xl p-6 hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                      <Check className="w-4 h-4 text-primary-foreground" />
+                      <Target className="w-4 h-4 text-primary-foreground" />
                     </div>
                     <div>
-                      <div className="font-semibold text-foreground">Close Accounting Period</div>
-                      <div className="text-sm text-muted-foreground">6/5/24</div>
+                      <div className="font-semibold text-foreground">Smart Routing</div>
+                      <div className="text-sm text-muted-foreground">To sales team</div>
                     </div>
                   </div>
-                  <Badge className="bg-primary/10 text-primary border-primary/20">Active</Badge>
+                  <Badge className="bg-green-100 text-green-700 border-green-200">Routed</Badge>
                 </div>
               </Card>
             </div>
@@ -293,75 +322,153 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Analytics Section */}
-      <section className="py-32 bg-card">
+      {/* Smart Content Learning Section */}
+      <section className="py-32 bg-card scroll-reveal">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="relative">
+              <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl p-8">
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                      <MessageSquare className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="text-lg font-semibold text-foreground">Training Content</div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-muted-foreground">FAQs.pdf</span>
+                      <Badge className="bg-green-100 text-green-700 text-xs">Learned</Badge>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-muted-foreground">Product Brochure.pdf</span>
+                      <Badge className="bg-green-100 text-green-700 text-xs">Learned</Badge>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-primary/50 rounded-full"></div>
+                      <span className="text-muted-foreground">Pricing Guide.pdf</span>
+                      <Badge className="bg-blue-100 text-blue-700 text-xs">Learning</Badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <h2 className="text-5xl font-bold text-foreground">
+                  Smarter with Your Content
+                </h2>
+                
+                <p className="text-xl text-foreground leading-relaxed">
+                  Fursa AI learns from the information you already have. Use your FAQs, brochures, 
+                  or guides to train the AI. Answers are always accurate, up-to-date, and consistent.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3">
+                    <Check className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                    <span className="text-foreground">Train with your existing content</span>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Check className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                    <span className="text-foreground">Always accurate and consistent</span>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Check className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                    <span className="text-foreground">No need to repeat yourself</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Insights Section */}
+      <section className="py-32 bg-background scroll-reveal">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <h2 className="text-5xl font-bold text-foreground">
-                See the forest, not the trees.
+                Insights That Help You Grow
               </h2>
               
               <p className="text-xl text-foreground leading-relaxed">
-                Unlock actionable and timely KPI's and financial insights with advanced financial reporting for 
-                increased visibility. Empowering executives to make informed, timely decisions.
+                Know what your customers care about and what works. See trends in questions, 
+                understand what's driving conversions, and use real data to improve your service.
               </p>
+
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <TrendingUp className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                  <span className="text-foreground">See trends in customer questions</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <BarChart3 className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                  <span className="text-foreground">Understand conversion drivers</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <Target className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                  <span className="text-foreground">Use data to improve service</span>
+                </div>
+              </div>
             </div>
 
             <div className="relative">
               <div className="grid grid-cols-2 gap-4">
-                {/* Revenue Card */}
+                {/* Lead Quality Score */}
                 <Card className="bg-primary/10 border border-primary/20 rounded-2xl p-6">
                   <div className="space-y-4">
-                    <div className="text-3xl font-bold text-foreground">$7M</div>
-                    <div className="text-sm text-primary">+ 5%</div>
-                    <div className="h-12 flex items-end space-x-1">
-                      {[40, 60, 45, 80, 70, 90].map((height, i) => (
-                        <div key={i} className="bg-primary/60 rounded-t flex-1" style={{height: `${height}%`}}></div>
-                      ))}
-                    </div>
-                  </div>
-                </Card>
-
-                {/* ARR Card */}
-                <Card className="bg-card border border-border/20 rounded-2xl p-6">
-                  <div className="space-y-4">
-                    <div className="text-sm text-muted-foreground">ARR</div>
-                    <div className="text-3xl font-bold text-foreground">$36M</div>
-                    <div className="text-sm text-primary">+ 10%</div>
+                    <div className="text-sm text-muted-foreground">Lead Quality</div>
+                    <div className="text-3xl font-bold text-foreground">87%</div>
+                    <div className="text-sm text-primary">+ 12%</div>
                     <div className="h-8 flex items-end">
                       <div className="bg-primary rounded w-full h-2"></div>
                     </div>
                   </div>
                 </Card>
 
-                {/* Deferred Revenue */}
+                {/* Response Time */}
                 <Card className="bg-card border border-border/20 rounded-2xl p-6">
                   <div className="space-y-4">
-                    <div className="text-sm text-muted-foreground">Deferred Revenue</div>
-                    <div className="text-3xl font-bold text-foreground">$91K</div>
-                    <div className="text-sm text-red-400">- 7%</div>
+                    <div className="text-sm text-muted-foreground">Avg Response</div>
+                    <div className="text-3xl font-bold text-foreground">2.3s</div>
+                    <div className="text-sm text-primary">-45%</div>
                     <div className="h-8 flex items-center">
-                      <div className="bg-red-400 rounded w-2/3 h-1"></div>
+                      <div className="bg-primary rounded w-1/4 h-1"></div>
                     </div>
                   </div>
                 </Card>
 
-                {/* Gross Churn */}
+                {/* Conversion Rate */}
                 <Card className="bg-card border border-border/20 rounded-2xl p-6">
                   <div className="space-y-4">
-                    <div className="text-sm text-muted-foreground">Gross Churn</div>
-                    <div className="text-3xl font-bold text-foreground">$890</div>
-                    <div className="text-sm text-red-400">- 7%</div>
-                    <div className="h-8 flex items-center">
-                      <div className="bg-red-400 rounded w-1/2 h-1"></div>
+                    <div className="text-sm text-muted-foreground">Conversion</div>
+                    <div className="text-3xl font-bold text-foreground">23.4%</div>
+                    <div className="text-sm text-primary">+ 18%</div>
+                    <div className="h-12 flex items-end space-x-1">
+                      {[30, 45, 60, 80, 55, 75].map((height, i) => (
+                        <div key={i} className="bg-primary/60 rounded-t flex-1" style={{height: `${height}%`}}></div>
+                      ))}
                     </div>
                   </div>
                 </Card>
 
-                {/* Customers */}
-                <Card className="bg-card border border-border/20 rounded-2xl p-6 col-span-2">
-                  <div className="text-sm text-muted-foreground mb-2">Customers</div>
+                {/* Customer Satisfaction */}
+                <Card className="bg-card border border-border/20 rounded-2xl p-6">
+                  <div className="space-y-4">
+                    <div className="text-sm text-muted-foreground">Satisfaction</div>
+                    <div className="text-3xl font-bold text-foreground">4.8</div>
+                    <div className="flex items-center space-x-1">
+                      {[1,2,3,4,5].map((star) => (
+                        <Star key={star} className="h-4 w-4 fill-primary text-primary" />
+                      ))}
+                    </div>
+                  </div>
                 </Card>
               </div>
             </div>
@@ -369,69 +476,108 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Solutions Section */}
-      <section className="py-32 bg-background">
+      {/* What You Get Section */}
+      <section className="py-32 bg-card scroll-reveal">
         <div className="container mx-auto px-6">
-          {/* Mid-Market Tab */}
-          <div className="bg-card rounded-3xl p-16 mb-8 relative overflow-hidden">
-            <div className="absolute top-8 left-8">
-              <Badge className="bg-muted text-muted-foreground">Solutions</Badge>
-            </div>
-            
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="space-y-8">
-                <div className="space-y-6">
-                  <h2 className="text-5xl font-bold text-foreground">
-                    Built for your next stage of{" "}
-                    <span className="text-primary">growth.</span>
-                  </h2>
-                  
-                  <p className="text-xl text-foreground leading-relaxed">
-                    The next-gen financial platform powering modern companies.
-                  </p>
-                </div>
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-bold text-foreground mb-6">
+              What You Get with Fursa AI
+            </h2>
+            <p className="text-xl text-foreground leading-relaxed max-w-3xl mx-auto">
+              Everything you need to transform your lead qualification process and grow your business faster.
+            </p>
+          </div>
 
-                <div className="flex space-x-2">
-                  <button className="bg-primary text-primary-foreground px-6 py-2 rounded-full font-semibold">
-                    Mid-Market
-                  </button>
-                  <button className="text-muted-foreground px-6 py-2 rounded-full">
-                    Enterprise
-                  </button>
-                  <button className="text-muted-foreground px-6 py-2 rounded-full">
-                    Partners
-                  </button>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Card className="bg-background/50 border border-border/20 rounded-3xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Check className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground mb-2">Automated Lead Qualification</h3>
+                  <p className="text-muted-foreground text-sm">Let AI handle the initial screening so your team focuses on hot prospects</p>
                 </div>
               </div>
+            </Card>
 
-              <Card className="bg-background/50 border border-border/20 rounded-3xl p-8">
-                <div className="space-y-6">
-                  <div className="space-y-4">
-                    <h3 className="text-2xl font-bold text-foreground">Mid-Market</h3>
-                    <p className="text-muted-foreground">Scale with confidence</p>
-                  </div>
-
-                  <div className="grid grid-cols-5 gap-2">
-                    {Array.from({length: 25}).map((_, i) => (
-                      <div key={i} className="w-4 h-4">
-                        <ArrowRight className="w-full h-full text-muted-foreground/20" />
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="space-y-4">
-                    <p className="text-foreground leading-relaxed">
-                      The power of an ERP with none of the legacy baggage. FursaAI gives mid-market finance & accounting teams an 
-                      intuitive platform for audit-readiness, multi-entity consolidations, close management, and financial reporting. 
-                      Everything you need for your next phase of growth, on a platform you'll actually enjoy using.
-                    </p>
-
-                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8">
-                      For Mid-Market
-                    </Button>
-                  </div>
+            <Card className="bg-background/50 border border-border/20 rounded-3xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Clock className="h-6 w-6 text-primary" />
                 </div>
-              </Card>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground mb-2">Instant Replies</h3>
+                  <p className="text-muted-foreground text-sm">Respond to customer inquiries 24/7 across all channels</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="bg-background/50 border border-border/20 rounded-3xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <TrendingUp className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground mb-2">Smarter Follow-ups</h3>
+                  <p className="text-muted-foreground text-sm">Never miss an opportunity with intelligent conversation tracking</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="bg-background/50 border border-border/20 rounded-3xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground mb-2">Better Experience</h3>
+                  <p className="text-muted-foreground text-sm">Delight customers and empower your team with AI assistance</p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-32 bg-background scroll-reveal">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="space-y-8">
+              <h2 className="text-6xl font-bold text-foreground">
+                Ready to <span className="text-primary">Qualify Leads</span> While You Sleep?
+              </h2>
+              
+              <p className="text-xl text-foreground leading-relaxed">
+                Join thousands of businesses using Fursa AI to automate their lead qualification 
+                and focus on what matters most - closing deals.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-12 py-6 text-lg group">
+                  Start Free Trial
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                <Button variant="outline" className="rounded-full px-12 py-6 text-lg border-2 hover:bg-primary/10">
+                  Schedule Demo
+                </Button>
+              </div>
+
+              <div className="flex items-center justify-center space-x-8 text-muted-foreground text-sm">
+                <div className="flex items-center space-x-2">
+                  <Check className="h-4 w-4 text-primary" />
+                  <span>No credit card required</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Check className="h-4 w-4 text-primary" />
+                  <span>Setup in 5 minutes</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Check className="h-4 w-4 text-primary" />
+                  <span>Cancel anytime</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
