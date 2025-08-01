@@ -259,17 +259,13 @@ const Index = () => {
                   Respond instantly, filter serious buyers, and keep conversations warm 24/7.
                 </p>
                 
-                <div className="flex flex-col sm:flex-row gap-4 animate-fade-up" style={{animationDelay: '0.4s'}}>
+                <div className="flex justify-center lg:justify-start animate-fade-up" style={{animationDelay: '0.4s'}}>
                   <Button 
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 py-6 text-lg group"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-10 py-6 text-lg group shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
                     onClick={() => navigate('/signin')}
                   >
                     Start Free Trial
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                  <Button variant="outline" className="rounded-full px-8 py-6 text-lg border-2 hover:bg-primary/10">
-                    <PlayCircle className="mr-2 h-5 w-5" />
-                    Watch Demo
                   </Button>
                 </div>
               </div>
@@ -290,50 +286,50 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Dashboard Mockup */}
+            {/* Animated Chart Dashboard */}
             <div className="relative">
-              <div className="relative bg-card rounded-3xl shadow-2xl overflow-hidden">
-                {/* Revenue Card */}
-                <div className="absolute top-8 right-8 bg-card rounded-2xl p-6 shadow-lg border border-border/20 w-64">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-muted rounded-full"></div>
+              <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-8 border border-border/50 shadow-2xl animate-fade-up" style={{animationDelay: '0.6s'}}>
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-foreground mb-2">Lead Conversion Growth</h3>
+                  <p className="text-muted-foreground">Real-time analytics dashboard</p>
+                </div>
+                
+                <div className="space-y-6">
+                  {[
+                    { month: "Jan", value: 45, leads: 128, color: "bg-orange-500" },
+                    { month: "Feb", value: 62, leads: 189, color: "bg-orange-600" },
+                    { month: "Mar", value: 78, leads: 245, color: "bg-primary" },
+                    { month: "Apr", value: 89, leads: 312, color: "bg-green-500" },
+                    { month: "May", value: 95, leads: 387, color: "bg-green-600" }
+                  ].map((item, index) => (
+                    <div key={item.month} className="flex items-center gap-4 group hover:bg-primary/5 rounded-lg p-2 transition-all duration-300">
+                      <span className="text-sm font-medium w-10 text-muted-foreground">{item.month}</span>
+                      <div className="flex-1 bg-muted/30 rounded-full h-4 overflow-hidden">
+                        <div 
+                          className={`h-full ${item.color} rounded-full transition-all duration-1000 ease-out animate-scale-in shadow-lg`}
+                          style={{ 
+                            width: `${item.value}%`,
+                            animationDelay: `${index * 200}ms`
+                          }}
+                        />
+                      </div>
+                      <div className="text-right min-w-[80px]">
+                        <div className="text-sm font-bold text-foreground">{item.value}%</div>
+                        <div className="text-xs text-muted-foreground">{item.leads} leads</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-8 p-4 bg-primary/10 rounded-xl border border-primary/20">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <TrendingUp className="h-5 w-5 text-primary" />
+                      <span className="text-sm font-medium text-foreground">Growth Rate</span>
+                    </div>
                     <div className="text-right">
-                      <div className="text-sm text-muted-foreground">Revenue</div>
-                      <div className="text-2xl font-bold text-foreground">$956K</div>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">VP of Finance</span>
-                      <span className="text-primary">+ 20%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full">
-                      <div className="h-2 bg-primary rounded-full w-3/4"></div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cash Flow Chart */}
-                <div className="absolute bottom-8 left-8 bg-card rounded-2xl p-6 shadow-lg border border-border/20 w-80">
-                  <div className="mb-4">
-                    <div className="text-sm text-muted-foreground">Cash Flow</div>
-                    <div className="text-primary font-semibold">+ 9.8%</div>
-                  </div>
-                  <div className="grid grid-cols-6 gap-2 h-16 items-end">
-                    {[60, 80, 40, 90, 70, 85].map((height, i) => (
-                      <div key={i} className="bg-primary rounded-t" style={{height: `${height}%`}}></div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Main Dashboard */}
-                <div className="p-8 bg-gradient-to-br from-background to-card min-h-96">
-                  <div className="space-y-6">
-                    <div className="h-4 bg-muted rounded w-1/3"></div>
-                    <div className="space-y-3">
-                      <div className="h-3 bg-muted/60 rounded w-2/3"></div>
-                      <div className="h-3 bg-muted/60 rounded w-1/2"></div>
-                      <div className="h-3 bg-muted/60 rounded w-3/4"></div>
+                      <div className="text-lg font-bold text-primary">+127%</div>
+                      <div className="text-xs text-muted-foreground">vs last quarter</div>
                     </div>
                   </div>
                 </div>
@@ -471,30 +467,41 @@ const Index = () => {
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
-              <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl p-8">
+              <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl p-8 hover:shadow-xl transition-all duration-500">
                 <div className="space-y-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                  <div className="flex items-center space-x-4 animate-fade-in">
+                    <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center animate-pulse">
                       <MessageSquare className="h-6 w-6 text-primary" />
                     </div>
                     <div className="text-lg font-semibold text-foreground">Training Content</div>
                   </div>
                   
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span className="text-muted-foreground">FAQs.pdf</span>
-                      <Badge className="bg-green-100 text-green-700 text-xs">Learned</Badge>
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3 p-3 rounded-lg bg-background/30 hover:bg-background/50 transition-all duration-300 animate-slide-in-right" style={{animationDelay: '0.1s'}}>
+                      <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+                      <span className="text-foreground font-medium flex-1">FAQs.pdf</span>
+                      <Badge className="bg-green-100 text-green-700 text-xs border-green-200 animate-fade-in" style={{animationDelay: '0.3s'}}>Learned</Badge>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span className="text-muted-foreground">Product Brochure.pdf</span>
-                      <Badge className="bg-green-100 text-green-700 text-xs">Learned</Badge>
+                    <div className="flex items-center space-x-3 p-3 rounded-lg bg-background/30 hover:bg-background/50 transition-all duration-300 animate-slide-in-right" style={{animationDelay: '0.2s'}}>
+                      <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+                      <span className="text-foreground font-medium flex-1">Product Brochure.pdf</span>
+                      <Badge className="bg-green-100 text-green-700 text-xs border-green-200 animate-fade-in" style={{animationDelay: '0.4s'}}>Learned</Badge>
                     </div>
+                    <div className="flex items-center space-x-3 p-3 rounded-lg bg-background/30 hover:bg-background/50 transition-all duration-300 animate-slide-in-right" style={{animationDelay: '0.3s'}}>
+                      <div className="w-3 h-3 bg-primary/60 rounded-full animate-bounce"></div>
+                      <span className="text-foreground font-medium flex-1">Pricing Guide.pdf</span>
+                      <Badge className="bg-blue-100 text-blue-700 text-xs border-blue-200 animate-pulse" style={{animationDelay: '0.5s'}}>Learning</Badge>
+                    </div>
+                  </div>
+                  
+                  {/* Loading animation for the learning file */}
+                  <div className="mt-4 p-3 rounded-lg bg-blue-50/50 border border-blue-200/50">
                     <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-primary/50 rounded-full"></div>
-                      <span className="text-muted-foreground">Pricing Guide.pdf</span>
-                      <Badge className="bg-blue-100 text-blue-700 text-xs">Learning</Badge>
+                      <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                      <span className="text-sm text-blue-700 font-medium">Processing content...</span>
+                    </div>
+                    <div className="mt-2 w-full bg-blue-200 rounded-full h-1">
+                      <div className="bg-blue-500 h-1 rounded-full animate-pulse" style={{width: '73%'}}></div>
                     </div>
                   </div>
                 </div>
