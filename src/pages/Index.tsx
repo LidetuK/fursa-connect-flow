@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { 
   Bot, 
   MessageSquare, 
@@ -19,11 +20,21 @@ import {
   Clock,
   Target,
   Menu,
-  ChevronDown
+  ChevronDown,
+  DollarSign,
+  UserCheck,
+  MessageCircle,
+  PieChart,
+  LineChart,
+  BarChart2
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const [openBenefit, setOpenBenefit] = useState<string | null>(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
@@ -44,6 +55,49 @@ const Index = () => {
     return () => observer.disconnect();
   }, []);
 
+  const benefits = {
+    qualification: {
+      title: "24/7 Lead Qualification",
+      description: "Automatically qualify leads while you sleep, filtering serious buyers from casual inquiries.",
+      features: [
+        "Instant response to inquiries",
+        "Smart qualifying questions",
+        "Lead scoring and prioritization",
+        "Integration with your CRM"
+      ]
+    },
+    conversion: {
+      title: "Higher Conversion Rates",
+      description: "Turn more visitors into customers with intelligent conversations and follow-ups.",
+      features: [
+        "Personalized responses",
+        "Automated follow-up sequences",
+        "A/B tested conversation flows",
+        "Real-time optimization"
+      ]
+    },
+    automation: {
+      title: "Process Automation",
+      description: "Automate repetitive tasks and focus your team on high-value activities.",
+      features: [
+        "Workflow automation",
+        "Task scheduling",
+        "Team notifications",
+        "Performance tracking"
+      ]
+    },
+    insights: {
+      title: "Data-Driven Insights",
+      description: "Get actionable insights about your leads and customer behavior patterns.",
+      features: [
+        "Lead analytics dashboard",
+        "Conversation insights",
+        "Performance metrics",
+        "Predictive analytics"
+      ]
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Orange Notification Bar */}
@@ -63,27 +117,114 @@ const Index = () => {
           </div>
           
           <nav className="hidden md:flex items-center space-x-8">
-            <div className="flex items-center space-x-1 text-foreground hover:text-primary cursor-pointer">
-              <span>Products</span>
-              <ChevronDown className="h-4 w-4" />
-            </div>
-            <div className="flex items-center space-x-1 text-foreground hover:text-primary cursor-pointer">
-              <span>Solutions</span>
-              <ChevronDown className="h-4 w-4" />
-            </div>
-            <a href="#customers" className="text-foreground hover:text-primary">Customers</a>
-            <div className="flex items-center space-x-1 text-foreground hover:text-primary cursor-pointer">
-              <span>Resources</span>
-              <ChevronDown className="h-4 w-4" />
-            </div>
+            <Dialog open={openBenefit === 'qualification'} onOpenChange={(open) => setOpenBenefit(open ? 'qualification' : null)}>
+              <DialogTrigger asChild>
+                <div className="flex items-center space-x-1 text-foreground hover:text-primary cursor-pointer">
+                  <span>Lead Qualification</span>
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>{benefits.qualification.title}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <p className="text-muted-foreground">{benefits.qualification.description}</p>
+                  <div className="space-y-2">
+                    {benefits.qualification.features.map((feature, i) => (
+                      <div key={i} className="flex items-center space-x-2">
+                        <Check className="h-4 w-4 text-primary" />
+                        <span className="text-sm">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+            <Dialog open={openBenefit === 'conversion'} onOpenChange={(open) => setOpenBenefit(open ? 'conversion' : null)}>
+              <DialogTrigger asChild>
+                <div className="flex items-center space-x-1 text-foreground hover:text-primary cursor-pointer">
+                  <span>Higher Conversions</span>
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>{benefits.conversion.title}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <p className="text-muted-foreground">{benefits.conversion.description}</p>
+                  <div className="space-y-2">
+                    {benefits.conversion.features.map((feature, i) => (
+                      <div key={i} className="flex items-center space-x-2">
+                        <Check className="h-4 w-4 text-primary" />
+                        <span className="text-sm">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+            <Dialog open={openBenefit === 'automation'} onOpenChange={(open) => setOpenBenefit(open ? 'automation' : null)}>
+              <DialogTrigger asChild>
+                <div className="flex items-center space-x-1 text-foreground hover:text-primary cursor-pointer">
+                  <span>Process Automation</span>
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>{benefits.automation.title}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <p className="text-muted-foreground">{benefits.automation.description}</p>
+                  <div className="space-y-2">
+                    {benefits.automation.features.map((feature, i) => (
+                      <div key={i} className="flex items-center space-x-2">
+                        <Check className="h-4 w-4 text-primary" />
+                        <span className="text-sm">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+            <Dialog open={openBenefit === 'insights'} onOpenChange={(open) => setOpenBenefit(open ? 'insights' : null)}>
+              <DialogTrigger asChild>
+                <div className="flex items-center space-x-1 text-foreground hover:text-primary cursor-pointer">
+                  <span>Data Insights</span>
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>{benefits.insights.title}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <p className="text-muted-foreground">{benefits.insights.description}</p>
+                  <div className="space-y-2">
+                    {benefits.insights.features.map((feature, i) => (
+                      <div key={i} className="flex items-center space-x-2">
+                        <Check className="h-4 w-4 text-primary" />
+                        <span className="text-sm">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </nav>
           
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" className="text-foreground hover:text-primary">
-              Log in
-            </Button>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6">
-              Get Started
+            <Button 
+              variant="ghost" 
+              className="text-foreground hover:text-primary"
+              onClick={() => navigate('/signin')}
+            >
+              Sign In
             </Button>
           </div>
         </div>
@@ -119,8 +260,11 @@ const Index = () => {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 animate-fade-up" style={{animationDelay: '0.4s'}}>
-                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 py-6 text-lg group">
-                    Get Started Free
+                  <Button 
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 py-6 text-lg group"
+                    onClick={() => navigate('/signin')}
+                  >
+                    Start Free Trial
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                   <Button variant="outline" className="rounded-full px-8 py-6 text-lg border-2 hover:bg-primary/10">
@@ -586,47 +730,94 @@ const Index = () => {
       {/* Footer */}
       <footer className="bg-card border-t border-border/20 py-16">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Bot className="h-6 w-6 text-accent" />
-                <span className="text-xl font-bold text-foreground">FursaAI</span>
-              </div>
-              <p className="text-muted-foreground">
-                The AI-first ERP powering next-gen finance & accounting teams.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-semibold text-foreground">Product</h4>
-              <div className="space-y-2">
-                <a href="#" className="block text-muted-foreground hover:text-foreground">Features</a>
-                <a href="#" className="block text-muted-foreground hover:text-foreground">Pricing</a>
-                <a href="#" className="block text-muted-foreground hover:text-foreground">Security</a>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-semibold text-foreground">Company</h4>
-              <div className="space-y-2">
-                <a href="#" className="block text-muted-foreground hover:text-foreground">About</a>
-                <a href="#" className="block text-muted-foreground hover:text-foreground">Blog</a>
-                <a href="#" className="block text-muted-foreground hover:text-foreground">Careers</a>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-semibold text-foreground">Support</h4>
-              <div className="space-y-2">
-                <a href="#" className="block text-muted-foreground hover:text-foreground">Help Center</a>
-                <a href="#" className="block text-muted-foreground hover:text-foreground">Contact</a>
-                <a href="#" className="block text-muted-foreground hover:text-foreground">Status</a>
-              </div>
-            </div>
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-foreground mb-4">
+              Transform Your Business with AI-Powered Lead Qualification
+            </h3>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Join thousands of businesses already using FursaAI to automate lead qualification, 
+              increase conversion rates, and scale their operations efficiently.
+            </p>
           </div>
 
-          <div className="border-t border-border/20 mt-12 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 FursaAI. All rights reserved.</p>
+          {/* Benefits Chart Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {/* Leads Qualified */}
+            <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <UserCheck className="h-8 w-8 text-primary" />
+                  <Badge className="bg-primary/20 text-primary">+156%</Badge>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-foreground">12,847</div>
+                  <div className="text-sm text-muted-foreground">Leads Qualified</div>
+                </div>
+                <div className="grid grid-cols-12 gap-1 h-6 items-end">
+                  {[40, 60, 30, 80, 50, 90, 70, 85, 60, 95, 75, 88].map((height, i) => (
+                    <div key={i} className="bg-primary/60 rounded-t" style={{height: `${height}%`}}></div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+
+            {/* Revenue Growth */}
+            <Card className="bg-gradient-to-br from-green-500/10 to-green-500/5 border border-green-500/20 rounded-2xl p-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <DollarSign className="h-8 w-8 text-green-600" />
+                  <Badge className="bg-green-100 text-green-700">+89%</Badge>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-foreground">$2.4M</div>
+                  <div className="text-sm text-muted-foreground">Revenue Generated</div>
+                </div>
+                <div className="flex items-end space-x-1 h-6">
+                  {[50, 65, 45, 75, 60, 85].map((height, i) => (
+                    <div key={i} className="bg-green-500/60 rounded-t flex-1" style={{height: `${height}%`}}></div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+
+            {/* Response Time */}
+            <Card className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20 rounded-2xl p-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <MessageCircle className="h-8 w-8 text-blue-600" />
+                  <Badge className="bg-blue-100 text-blue-700">-92%</Badge>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-foreground">1.8s</div>
+                  <div className="text-sm text-muted-foreground">Avg Response Time</div>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div className="bg-blue-500 h-2 rounded-full w-3/4"></div>
+                </div>
+              </div>
+            </Card>
+
+            {/* Conversion Rate */}
+            <Card className="bg-gradient-to-br from-purple-500/10 to-purple-500/5 border border-purple-500/20 rounded-2xl p-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <PieChart className="h-8 w-8 text-purple-600" />
+                  <Badge className="bg-purple-100 text-purple-700">+127%</Badge>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-foreground">34.2%</div>
+                  <div className="text-sm text-muted-foreground">Conversion Rate</div>
+                </div>
+                <div className="relative w-16 h-16 mx-auto">
+                  <div className="absolute inset-0 rounded-full border-4 border-muted"></div>
+                  <div className="absolute inset-0 rounded-full border-4 border-purple-500 border-t-transparent transform rotate-45"></div>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          <div className="text-center">
+            <p className="text-muted-foreground">&copy; 2025 FursaAI. All rights reserved.</p>
           </div>
         </div>
       </footer>
