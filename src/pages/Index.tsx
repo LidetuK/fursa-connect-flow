@@ -220,8 +220,8 @@ const Index = () => {
           
           <div className="flex items-center space-x-4">
             <Button 
-              variant="ghost" 
-              className="text-foreground hover:text-primary"
+              variant="default" 
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
               onClick={() => navigate('/signin')}
             >
               Sign In
@@ -264,7 +264,7 @@ const Index = () => {
                     className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-10 py-6 text-lg group shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
                     onClick={() => navigate('/signin')}
                   >
-                    Start Free Trial
+                    Get Started
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </div>

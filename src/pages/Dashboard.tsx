@@ -25,13 +25,36 @@ import {
   Globe,
   Smartphone,
   Clock,
-  Star
+  Star,
+  LogOut,
+  User
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
   const [selectedTimeframe, setSelectedTimeframe] = useState("7d");
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed out",
+        description: "You have been signed out successfully.",
+      });
+      navigate('/');
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const stats = [
     {
@@ -98,13 +121,25 @@ const Dashboard = () => {
                 <Button variant="ghost" className="text-foreground">
                   Dashboard
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                <Button 
+                  variant="ghost" 
+                  className="text-muted-foreground hover:text-foreground"
+                  onClick={() => navigate('/conversations')}
+                >
                   Conversations
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                <Button 
+                  variant="ghost" 
+                  className="text-muted-foreground hover:text-foreground"
+                  onClick={() => navigate('/analytics')}
+                >
                   Analytics
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                <Button 
+                  variant="ghost" 
+                  className="text-muted-foreground hover:text-foreground"
+                  onClick={() => navigate('/settings')}
+                >
                   Settings
                 </Button>
               </div>
@@ -125,12 +160,20 @@ const Dashboard = () => {
               <Button variant="ghost" size="sm" className="p-2">
                 <Settings className="h-5 w-5" />
               </Button>
+              
+              {/* User Info */}
+              <div className="flex items-center space-x-2 bg-card border border-border/20 rounded-lg px-3 py-2">
+                <User className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-foreground">{user?.email}</span>
+              </div>
+              
               <Button
                 variant="ghost"
-                onClick={() => navigate('/')}
-                className="text-muted-foreground hover:text-foreground"
+                onClick={handleSignOut}
+                className="text-muted-foreground hover:text-foreground flex items-center space-x-2"
               >
-                Sign Out
+                <LogOut className="h-4 w-4" />
+                <span>Sign Out</span>
               </Button>
             </div>
           </div>
@@ -142,7 +185,9 @@ const Dashboard = () => {
         {/* Welcome Section */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Welcome back, Alex!</h1>
+            <h1 className="text-3xl font-bold text-foreground">
+              Welcome back, {user?.email?.split('@')[0] || 'User'}!
+            </h1>
             <p className="text-muted-foreground">Here's what's happening with your leads today.</p>
           </div>
           <div className="flex items-center space-x-3">
