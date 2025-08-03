@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { MessageCircle, Send, Bot, User, X, Minimize2 } from "lucide-react";
+import chatbotAvatar from "@/assets/chatbot-avatar.png";
 
 interface Message {
   id: string;
@@ -134,10 +135,12 @@ Be friendly, concise, and focused on how FursaAI can help their business grow. I
       }`}>
         <div className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-200 to-amber-400 flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center">
-                <div className="w-3 h-3 rounded-full bg-amber-800"></div>
-              </div>
+            <div className="w-10 h-10 rounded-full overflow-hidden">
+              <img 
+                src={chatbotAvatar} 
+                alt="FursaAI Assistant" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h3 className="font-semibold text-foreground">FursaAI Assistant</h3>
@@ -181,10 +184,12 @@ Be friendly, concise, and focused on how FursaAI can help their business grow. I
                       {message.isUser ? (
                         <User className="h-4 w-4 text-primary-foreground" />
                       ) : (
-                        <div className="w-4 h-4 rounded-full bg-gradient-to-br from-amber-200 to-amber-400 flex items-center justify-center">
-                          <div className="w-2.5 h-2.5 rounded-full bg-amber-600 flex items-center justify-center">
-                            <div className="w-1.5 h-1.5 rounded-full bg-amber-800"></div>
-                          </div>
+                        <div className="w-4 h-4 rounded-full overflow-hidden">
+                          <img 
+                            src={chatbotAvatar} 
+                            alt="Assistant" 
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                       )}
                     </div>
@@ -204,10 +209,12 @@ Be friendly, concise, and focused on how FursaAI can help their business grow. I
               {isLoading && (
                 <div className="flex justify-start">
                   <div className="flex items-start space-x-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-200 to-amber-400 flex items-center justify-center">
-                      <div className="w-5 h-5 rounded-full bg-amber-600 flex items-center justify-center">
-                        <div className="w-3 h-3 rounded-full bg-amber-800"></div>
-                      </div>
+                    <div className="w-8 h-8 rounded-full overflow-hidden">
+                      <img 
+                        src={chatbotAvatar} 
+                        alt="Assistant" 
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div className="bg-muted rounded-2xl p-3">
                       <div className="flex space-x-1">
