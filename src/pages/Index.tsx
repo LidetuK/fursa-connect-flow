@@ -30,6 +30,8 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ChatBot from "@/components/ChatBot";
+import ContactForm from "@/components/ContactForm";
 
 const Index = () => {
   const [openBenefit, setOpenBenefit] = useState<string | null>(null);
@@ -733,6 +735,12 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Contact Form */}
+      <ContactForm />
+
+      {/* ChatBot */}
+      <ChatBot />
 
       {/* Footer */}
       <footer className="bg-card border-t border-border/20 py-16">
