@@ -134,8 +134,10 @@ Be friendly, concise, and focused on how FursaAI can help their business grow. I
       }`}>
         <div className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <Bot className="h-6 w-6 text-primary" />
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-200 to-amber-400 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center">
+                <div className="w-3 h-3 rounded-full bg-amber-800"></div>
+              </div>
             </div>
             <div>
               <h3 className="font-semibold text-foreground">FursaAI Assistant</h3>
@@ -179,7 +181,11 @@ Be friendly, concise, and focused on how FursaAI can help their business grow. I
                       {message.isUser ? (
                         <User className="h-4 w-4 text-primary-foreground" />
                       ) : (
-                        <Bot className="h-4 w-4 text-primary" />
+                        <div className="w-4 h-4 rounded-full bg-gradient-to-br from-amber-200 to-amber-400 flex items-center justify-center">
+                          <div className="w-2.5 h-2.5 rounded-full bg-amber-600 flex items-center justify-center">
+                            <div className="w-1.5 h-1.5 rounded-full bg-amber-800"></div>
+                          </div>
+                        </div>
                       )}
                     </div>
                     <div className={`rounded-2xl p-3 ${
@@ -198,8 +204,10 @@ Be friendly, concise, and focused on how FursaAI can help their business grow. I
               {isLoading && (
                 <div className="flex justify-start">
                   <div className="flex items-start space-x-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Bot className="h-4 w-4 text-primary" />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-200 to-amber-400 flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full bg-amber-600 flex items-center justify-center">
+                        <div className="w-3 h-3 rounded-full bg-amber-800"></div>
+                      </div>
                     </div>
                     <div className="bg-muted rounded-2xl p-3">
                       <div className="flex space-x-1">
