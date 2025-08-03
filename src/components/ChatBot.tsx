@@ -120,9 +120,13 @@ Be friendly, concise, and focused on how FursaAI can help their business grow. I
       <div className="fixed bottom-6 right-6 z-50">
         <Button
           onClick={() => setIsOpen(true)}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-16 h-16 shadow-2xl hover:scale-110 transition-all duration-300 animate-pulse"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-16 h-16 shadow-2xl hover:scale-110 transition-all duration-300 animate-pulse p-0 overflow-hidden"
         >
-          <MessageCircle className="h-8 w-8" />
+          <img 
+            src={chatbotAvatar} 
+            alt="Chat with FursaAI Assistant" 
+            className="w-full h-full object-cover rounded-full"
+          />
         </Button>
       </div>
     );
