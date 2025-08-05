@@ -139,7 +139,7 @@ Be friendly, concise, and focused on how FursaAI can help their business grow. I
       }`}>
         <div className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 rounded-full overflow-hidden">
+            <div className="w-14 h-14 rounded-full overflow-hidden">
               <img 
                 src={chatbotAvatar} 
                 alt="FursaAI Assistant" 
@@ -182,13 +182,13 @@ Be friendly, concise, and focused on how FursaAI can help their business grow. I
                   <div className={`flex items-start space-x-2 max-w-[80%] ${
                     message.isUser ? 'flex-row-reverse space-x-reverse' : 'flex-row'
                   }`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                       message.isUser ? 'bg-primary' : 'bg-primary/10'
                     }`}>
                       {message.isUser ? (
-                        <User className="h-4 w-4 text-primary-foreground" />
+                        <User className="h-5 w-5 text-primary-foreground" />
                       ) : (
-                        <div className="w-4 h-4 rounded-full overflow-hidden">
+                        <div className="w-10 h-10 rounded-full overflow-hidden">
                           <img 
                             src={chatbotAvatar} 
                             alt="Assistant" 
@@ -213,7 +213,7 @@ Be friendly, concise, and focused on how FursaAI can help their business grow. I
               {isLoading && (
                 <div className="flex justify-start">
                   <div className="flex items-start space-x-2">
-                    <div className="w-8 h-8 rounded-full overflow-hidden">
+                    <div className="w-10 h-10 rounded-full overflow-hidden">
                       <img 
                         src={chatbotAvatar} 
                         alt="Assistant" 
