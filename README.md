@@ -1,1 +1,1 @@
-Fursa Ai v.01
+Fursa Ai V.01
