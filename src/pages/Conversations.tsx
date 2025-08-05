@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Bot, 
   MessageSquare, 
@@ -27,6 +28,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { WhatsAppIntegration } from "@/components/WhatsAppIntegration";
 
 interface Message {
   id: string;
@@ -291,9 +293,18 @@ const Conversations = () => {
       </header>
 
       {/* Main Content */}
-      <div className="flex h-[calc(100vh-80px)]">
-        {/* Conversations Sidebar */}
-        <div className="w-80 border-r border-border/20 bg-card">
+      <div className="h-[calc(100vh-80px)] p-6">
+        <Tabs defaultValue="conversations" className="h-full flex flex-col">
+          <TabsList className="grid w-full grid-cols-3 mb-6">
+            <TabsTrigger value="conversations">Conversations</TabsTrigger>
+            <TabsTrigger value="whatsapp">WhatsApp Setup</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="conversations" className="flex-1">
+            <div className="flex h-full -m-6">
+              {/* Conversations Sidebar */}
+              <div className="w-80 border-r border-border/20 bg-card">
           <div className="p-4 border-b border-border/20">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-foreground">Conversations</h2>
@@ -501,8 +512,27 @@ const Conversations = () => {
           )}
         </div>
       </div>
+          </TabsContent>
+
+          <TabsContent value="whatsapp" className="flex-1">
+            <WhatsAppIntegration />
+          </TabsContent>
+
+          <TabsContent value="analytics" className="flex-1">
+            <Card>
+              <CardHeader>
+                <CardTitle>Analytics</CardTitle>
+                <CardDescription>View your conversation analytics and metrics</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Analytics features coming soon...</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };
 
-export default Conversations; 
+export default Conversations;
