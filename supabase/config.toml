@@ -12,12 +12,12 @@ enabled = true
 port = 54320
 site_url = "http://localhost:3000"
 additional_redirect_urls = ["https://localhost:3000"]
-jwt_expiry = 3600
+jwt_expiry = 1800
 
 [auth.email]
 enable_signup = true
 double_confirm_changes = true
-enable_confirmations = false
+enable_confirmations = true
 
 [edge_runtime]
 enabled = true
@@ -27,4 +27,7 @@ port = 54333
 verify_jwt = false
 
 [functions.whatsapp-message-sender]
+verify_jwt = true
+
+[functions.chatbot-groq]
 verify_jwt = true

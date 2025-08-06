@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { MessageCircle, Send, Bot, User, X, Minimize2 } from "lucide-react";
 import chatbotAvatar from "@/assets/chatbot-avatar.png";
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface Message {
   id: string;
@@ -50,45 +52,34 @@ const ChatBot = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer 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`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'llama3-8b-8192',
-          messages: [
-            {
-              role: 'system',
-              content: `You are FursaAI's helpful assistant. You help users understand our AI-powered lead qualification platform. 
+      const { data: session } = await supabase.auth.getSession();
+      
+      if (!session?.session?.access_token) {
+        toast.error('Please sign in to use the chatbot');
+        setIsLoading(false);
+        return;
+      }
 
-Key features to mention:
-- 24/7 automated lead qualification
-- Multi-channel support (website, WhatsApp, Facebook, Instagram, voice)
-- Smart AI that learns from your content (FAQs, brochures, guides)
-- Real-time analytics and insights
-- Higher conversion rates through intelligent conversations
-- Process automation for sales teams
-
-Be friendly, concise, and focused on how FursaAI can help their business grow. If they ask about pricing or want a demo, encourage them to fill out our contact form to get started.`
-            },
-            {
-              role: 'user',
-              content: inputMessage
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 300
-        })
+      const response = await supabase.functions.invoke('chatbot-groq', {
+        body: {
+          message: inputMessage,
+          conversation: messages.filter(m => m.content.trim() !== '').slice(-5).map(m => ({
+            role: m.isUser ? 'user' : 'assistant',
+            content: m.content
+          }))
+        }
       });
 
-      const data = await response.json();
+      if (response.error) {
+        throw new Error(response.error.message || 'Failed to get response from AI');
+      }
+
+      const aiResponse = response.data?.response;
       
-      if (data.choices && data.choices[0]) {
+      if (aiResponse) {
         const botMessage: Message = {
           id: (Date.now() + 1).toString(),
-          content: data.choices[0].message.content,
+          content: aiResponse,
           isUser: false,
           timestamp: new Date()
         };
