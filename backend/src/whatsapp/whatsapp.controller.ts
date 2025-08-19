@@ -1,9 +1,11 @@
 import { Controller, Post, Get, Body, HttpException, HttpStatus, Request, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { WhatsAppService } from './whatsapp.service';
 
 // Meta WhatsApp Business API compliant controller
 @Controller('whatsapp')
 export class WhatsAppController {
+  constructor(private readonly whatsappService: WhatsAppService) {}
   
   // Send message with compliance checks
   @Post('send-message')
