@@ -24,7 +24,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   // Health check endpoint for Railway
-  app.get('/api/health', (req: Request, res: Response) => {
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.get('/api/health', (req: Request, res: Response) => {
     res.status(200).json({ 
       status: 'ok', 
       timestamp: new Date().toISOString(),
