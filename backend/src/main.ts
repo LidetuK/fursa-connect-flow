@@ -7,6 +7,10 @@ import * as express from 'express';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
+  // Add body parsing middleware FIRST
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+  
   // Enable CORS for frontend
   app.enableCors({
     origin: [
@@ -20,10 +24,6 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-client-info', 'apikey'],
   });
-
-  // Add body parsing middleware
-  app.use(express.json({ limit: '10mb' }));
-  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
   // Global validation pipe
   app.useGlobalPipes(new ValidationPipe({

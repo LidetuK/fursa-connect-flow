@@ -48,6 +48,8 @@ export class AuthController {
       console.log('📋 Full registration data:', JSON.stringify(registerDto, null, 2));
       console.log('🔍 Request body type:', typeof registerDto);
       console.log('🔍 Request body keys:', Object.keys(registerDto || {}));
+      console.log('🔍 Is registerDto null/undefined?', registerDto === null || registerDto === undefined);
+      console.log('🔍 registerDto value:', registerDto);
       
       // Validate required fields
       if (!registerDto.email) {
