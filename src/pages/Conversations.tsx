@@ -28,9 +28,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { WhatsAppIntegration } from "@/components/WhatsAppIntegration";
-import { WhatsAppWebIntegration } from "@/components/WhatsAppWebIntegration";
-import { supabase } from "@/integrations/supabase/client";
+// WhatsApp integration will be added later with Meta API
 
 interface Message {
   id: string;
@@ -68,73 +66,85 @@ const Conversations = () => {
   const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Fetch conversations from Supabase
+  // Fetch conversations from backend API (mock data for now)
   const fetchConversations = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('conversations')
-        .select('*')
-        .order('last_message_at', { ascending: false });
+      // TODO: Replace with actual API call to backend
+      const mockConversations: Conversation[] = [
+        {
+          id: '1',
+          title: 'Lead Inquiry - John Doe',
+          status: 'active',
+          channel: 'whatsapp',
+          last_message: 'Hi, I\'m interested in your services',
+          last_message_at: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          score: 85,
+          participant_name: 'John Doe',
+          participant_identifier: '+1234567890'
+        },
+        {
+          id: '2',
+          title: 'Support Request - Jane Smith',
+          status: 'pending',
+          channel: 'website',
+          last_message: 'I need help with my account',
+          last_message_at: new Date(Date.now() - 3600000).toISOString(),
+          created_at: new Date(Date.now() - 7200000).toISOString(),
+          updated_at: new Date(Date.now() - 3600000).toISOString(),
+          score: 65,
+          participant_name: 'Jane Smith',
+          participant_identifier: 'jane@example.com'
+        }
+      ];
 
-      if (error) {
-        console.error('Error fetching conversations:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load conversations",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Transform the data to match our interface
-      const transformedConversations = data?.map(conv => ({
-        id: conv.id,
-        title: conv.title,
-        status: conv.status,
-        channel: conv.channel,
-        last_message: conv.last_message || 'No messages yet',
-        last_message_at: conv.last_message_at,
-        created_at: conv.created_at,
-        updated_at: conv.updated_at,
-        score: conv.score || 0,
-        participant_name: null, // Will be populated later if needed
-        participant_identifier: null, // Will be populated later if needed
-      })) || [];
-
-      setConversations(transformedConversations);
+      setConversations(mockConversations);
     } catch (error) {
       console.error('Error fetching conversations:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load conversations",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch messages for a conversation
+  // Fetch messages for a conversation (mock data for now)
   const fetchMessages = async (conversationId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('whatsapp_messages')
-        .select('*')
-        .eq('conversation_id', conversationId)
-        .order('created_at', { ascending: true });
+      // TODO: Replace with actual API call to backend
+      const mockMessages: Message[] = [
+        {
+          id: '1',
+          text: 'Hi, I\'m interested in your services',
+          sender: 'user',
+          timestamp: new Date(Date.now() - 300000),
+          status: 'read',
+          channel: 'whatsapp'
+        },
+        {
+          id: '2',
+          text: 'Hello! Thank you for reaching out. I\'d be happy to help you with our services. What specific information are you looking for?',
+          sender: 'bot',
+          timestamp: new Date(Date.now() - 240000),
+          status: 'delivered',
+          channel: 'whatsapp'
+        },
+        {
+          id: '3',
+          text: 'I\'m looking for AI-powered lead generation solutions',
+          sender: 'user',
+          timestamp: new Date(Date.now() - 180000),
+          status: 'read',
+          channel: 'whatsapp'
+        }
+      ];
 
-      if (error) {
-        console.error('Error fetching messages:', error);
-        return;
-      }
-
-      // Transform messages to match our interface
-      const transformedMessages = data?.map(msg => ({
-        id: msg.id,
-        text: msg.message_text || '',
-        sender: msg.direction === 'inbound' ? 'user' : 'bot',
-        timestamp: new Date(msg.created_at),
-        status: msg.status,
-        channel: msg.message_type as any,
-      })) || [];
-
-      setMessages(transformedMessages);
+      setMessages(mockMessages);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }

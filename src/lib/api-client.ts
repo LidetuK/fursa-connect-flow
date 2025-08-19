@@ -1,6 +1,6 @@
 // API Client to replace Supabase calls with NestJS backend
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://fursa-connect-flow-production.up.railway.app/api';
 
 class ApiClient {
   private baseUrl: string;
