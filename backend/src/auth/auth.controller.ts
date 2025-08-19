@@ -43,6 +43,8 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
+    console.log('🎯 REGISTER ENDPOINT REACHED!');
+    console.log('🎯 Raw registerDto:', registerDto);
     try {
       console.log('📝 Registration attempt for:', registerDto?.email);
       console.log('📋 Full registration data:', JSON.stringify(registerDto, null, 2));

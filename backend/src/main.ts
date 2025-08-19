@@ -25,11 +25,11 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization', 'x-client-info', 'apikey'],
   });
 
-  // Global validation pipe
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    transform: true,
-  }));
+  // Global validation pipe - temporarily disabled for debugging
+  // app.useGlobalPipes(new ValidationPipe({
+  //   whitelist: true,
+  //   transform: true,
+  // }));
 
   // Global prefix
   app.setGlobalPrefix('api');
