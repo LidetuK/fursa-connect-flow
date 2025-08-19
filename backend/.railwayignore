@@ -1,0 +1,23 @@
+# Frontend files
+../src/
+../public/
+../index.html
+../vite.config.ts
+../tailwind.config.ts
+../postcss.config.js
+../eslint.config.js
+../components.json
+../tsconfig*.json
+
+# Lock files
+../bun.lockb
+../package-lock.json
+../package.json
+
+# Node modules
+../node_modules/
+
+# Other files
+../*.md
+../*.js
+../supabase/
