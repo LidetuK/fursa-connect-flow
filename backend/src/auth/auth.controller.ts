@@ -3,16 +3,31 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import * as bcrypt from 'bcryptjs';
+import { IsEmail, IsString, IsOptional, MinLength } from 'class-validator';
 
 export class LoginDto {
+  @IsEmail()
   email: string;
+
+  @IsString()
+  @MinLength(6)
   password: string;
 }
 
 export class RegisterDto {
+  @IsEmail()
   email: string;
+
+  @IsString()
+  @MinLength(6)
   password: string;
+
+  @IsOptional()
+  @IsString()
   firstName?: string;
+
+  @IsOptional()
+  @IsString()
   lastName?: string;
 }
 
@@ -43,15 +58,8 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
-    console.log('🎯 REGISTER ENDPOINT REACHED!');
-    console.log('🎯 Raw registerDto:', registerDto);
     try {
-      console.log('📝 Registration attempt for:', registerDto?.email);
-      console.log('📋 Full registration data:', JSON.stringify(registerDto, null, 2));
-      console.log('🔍 Request body type:', typeof registerDto);
-      console.log('🔍 Request body keys:', Object.keys(registerDto || {}));
-      console.log('🔍 Is registerDto null/undefined?', registerDto === null || registerDto === undefined);
-      console.log('🔍 registerDto value:', registerDto);
+      console.log('📝 Registration attempt for:', registerDto.email);
       
       // Validate required fields
       if (!registerDto.email) {
