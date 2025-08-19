@@ -12,14 +12,17 @@ WORKDIR /app/backend
 COPY backend/package*.json ./
 COPY backend/.npmrc ./
 
-# Install dependencies with npm (explicitly avoid bun)
-RUN npm ci --only=production --prefer-offline --no-audit
+# Install ALL dependencies (including dev dependencies for build)
+RUN npm ci --prefer-offline --no-audit
 
 # Copy backend source code
 COPY backend/ ./
 
 # Build the application
 RUN npm run build
+
+# Remove dev dependencies for production
+RUN npm prune --production
 
 # Expose port
 EXPOSE 3001
