@@ -28,7 +28,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-// WhatsApp integration will be added later with Meta API
+import { WhatsAppIntegration } from "@/components/WhatsAppIntegration";
 
 interface Message {
   id: string;
@@ -622,18 +622,7 @@ const Conversations = () => {
           </TabsContent>
 
           <TabsContent value="whatsapp" className="flex-1">
-            <Tabs defaultValue="business" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="business">Business API</TabsTrigger>
-                <TabsTrigger value="web">WhatsApp Web</TabsTrigger>
-              </TabsList>
-              <TabsContent value="business" className="mt-4">
-                <WhatsAppIntegration />
-              </TabsContent>
-              <TabsContent value="web" className="mt-4">
-                <WhatsAppWebIntegration />
-              </TabsContent>
-            </Tabs>
+            <WhatsAppIntegration />
           </TabsContent>
 
           <TabsContent value="analytics" className="flex-1">
