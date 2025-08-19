@@ -1,5 +1,6 @@
 [build]
 builder = "dockerfile"
+workingDirectory = "backend"
 
 [build.envs]
 NIXPACKS_NODE_PACKAGE_MANAGER = "npm"
