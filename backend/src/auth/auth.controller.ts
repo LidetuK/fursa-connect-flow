@@ -44,8 +44,16 @@ export class AuthController {
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     try {
-      console.log('📝 Registration attempt for:', registerDto.email);
+      console.log('📝 Registration attempt for:', registerDto?.email);
       console.log('📋 Full registration data:', JSON.stringify(registerDto, null, 2));
+      console.log('🔍 Request body type:', typeof registerDto);
+      console.log('🔍 Request body keys:', Object.keys(registerDto || {}));
+      
+      // Validate required fields
+      if (!registerDto.email) {
+        console.log('❌ Registration failed: Email is required');
+        throw new HttpException('Email is required', HttpStatus.BAD_REQUEST);
+      }
       
       // Check if user already exists
       const existingUser = await this.usersService.findByEmail(registerDto.email);
@@ -59,6 +67,11 @@ export class AuthController {
       console.log('✅ User does not exist, proceeding with registration');
 
       // Hash password
+      if (!registerDto.password) {
+        console.log('❌ Registration failed: Password is required');
+        throw new HttpException('Password is required', HttpStatus.BAD_REQUEST);
+      }
+      
       const hashedPassword = await bcrypt.hash(registerDto.password, 10);
       console.log('🔐 Password hashed successfully');
 
@@ -77,10 +90,18 @@ export class AuthController {
       return this.authService.login(result);
     } catch (error) {
       console.log('❌ Registration error:', error.message);
+      console.log('❌ Registration error stack:', error.stack);
+      
       if (error instanceof HttpException) {
         throw error;
       }
-      throw new HttpException('Registration failed', HttpStatus.BAD_REQUEST);
+      
+      // Handle specific bcrypt errors
+      if (error.message.includes('Illegal arguments')) {
+        throw new HttpException('Invalid password format', HttpStatus.BAD_REQUEST);
+      }
+      
+      throw new HttpException(`Registration failed: ${error.message}`, HttpStatus.BAD_REQUEST);
     }
   }
 
