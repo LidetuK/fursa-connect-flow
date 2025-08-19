@@ -1,23 +1,22 @@
-# Frontend files
-../src/
-../public/
-../index.html
-../vite.config.ts
-../tailwind.config.ts
-../postcss.config.js
-../eslint.config.js
-../components.json
-../tsconfig*.json
+# Exclude bun and other package manager files
+bun.lockb
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
 
-# Lock files
-../bun.lockb
-../package-lock.json
-../package.json
+# Exclude node modules
+node_modules/
 
-# Node modules
-../node_modules/
+# Exclude development files
+.env
+.env.local
+.env.development
+*.log
 
-# Other files
-../*.md
-../*.js
-../supabase/
+# Exclude git files
+.git/
+.gitignore
+
+# Exclude documentation
+README.md
+*.md
