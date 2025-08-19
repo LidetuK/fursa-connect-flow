@@ -8,7 +8,13 @@ async function bootstrap() {
   
   // Enable CORS for frontend
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:8080', 'https://fursa-ai-two.vercel.app'],
+    origin: [
+      'http://localhost:3000', 
+      'http://localhost:8080', 
+      'https://fursa-ai-two.vercel.app',
+      'https://fursa-connect-flow.vercel.app',
+      'https://fursa-connect-flow-git-main-fursa-connect.vercel.app'
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-client-info', 'apikey'],

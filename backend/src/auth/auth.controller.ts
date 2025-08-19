@@ -1,6 +1,7 @@
-import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Get, Body, HttpException, HttpStatus, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import * as bcrypt from 'bcryptjs';
 
 export class LoginDto {
@@ -80,6 +81,23 @@ export class AuthController {
         throw error;
       }
       throw new HttpException('Registration failed', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Get('profile')
+  @UseGuards(JwtAuthGuard)
+  async getProfile(@Request() req) {
+    try {
+      console.log('👤 Profile request for user ID:', req.user?.id);
+      const user = await this.usersService.findOne(req.user.id);
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+      const { password, ...result } = user;
+      return result;
+    } catch (error) {
+      console.log('❌ Profile error:', error.message);
+      throw new HttpException('Failed to get profile', HttpStatus.UNAUTHORIZED);
     }
   }
 }
