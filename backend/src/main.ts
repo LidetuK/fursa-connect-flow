@@ -22,11 +22,20 @@ async function bootstrap() {
   // Global prefix
   app.setGlobalPrefix('api');
 
+  // Health check endpoint for Railway
+  app.get('/api/health', (req, res) => {
+    res.status(200).json({ 
+      status: 'ok', 
+      timestamp: new Date().toISOString(),
+      service: 'Fursa Connect Backend'
+    });
+  });
+
   const port = process.env.PORT || 3001;
   await app.listen(port);
   console.log(`🚀 NestJS Backend running on port ${port}`);
-  console.log(`📱 WhatsApp Web integration ready`);
   console.log(`🔗 API available at http://localhost:${port}/api`);
+  console.log(`🏥 Health check available at http://localhost:${port}/api/health`);
 }
 
 bootstrap();
