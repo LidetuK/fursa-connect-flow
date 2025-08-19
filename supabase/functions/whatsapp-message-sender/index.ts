@@ -74,28 +74,30 @@ serve(async (req) => {
       );
     }
 
-    // Send message to n8n webhook
-    const n8nResponse = await fetch(integration.webhook_url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${integration.n8n_webhook_token}`,
-      },
-      body: JSON.stringify({
-        action: 'send_message',
-        to: to,
-        message: message,
-        integration_id: integration_id,
-      }),
-    });
+    // Send message via WhatsApp API service
+    const whatsappResponse = await fetch(
+      `${supabaseUrl}/functions/v1/whatsapp-api-service`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseServiceKey}`,
+        },
+        body: JSON.stringify({
+          to: to,
+          message: message,
+          integration_id: integration_id,
+        }),
+      }
+    );
 
-    if (!n8nResponse.ok) {
-      console.error('Failed to send message via n8n:', await n8nResponse.text());
-      throw new Error('Failed to send message via n8n');
+    if (!whatsappResponse.ok) {
+      console.error('Failed to send message via WhatsApp API:', await whatsappResponse.text());
+      throw new Error('Failed to send message via WhatsApp API');
     }
 
-    const n8nResult = await n8nResponse.json();
-    console.log('n8n response:', n8nResult);
+    const whatsappResult = await whatsappResponse.json();
+    console.log('WhatsApp API response:', whatsappResult);
 
     // Store the outbound message
     const { error: messageError } = await supabase

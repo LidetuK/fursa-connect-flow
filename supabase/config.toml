@@ -9,7 +9,6 @@ max_rows = 1000
 
 [auth]
 enabled = true
-port = 54320
 site_url = "http://localhost:3000"
 additional_redirect_urls = ["https://localhost:3000"]
 jwt_expiry = 1800
@@ -21,7 +20,6 @@ enable_confirmations = true
 
 [edge_runtime]
 enabled = true
-port = 54333
 
 [functions.whatsapp-webhook-receiver]
 verify_jwt = false
@@ -31,3 +29,9 @@ verify_jwt = true
 
 [functions.chatbot-groq]
 verify_jwt = true
+
+[functions.whatsapp-api-service]
+verify_jwt = false
+
+[functions.n8n-bridge]
+verify_jwt = false

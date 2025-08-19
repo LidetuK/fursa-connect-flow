@@ -29,6 +29,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { WhatsAppIntegration } from "@/components/WhatsAppIntegration";
+import { WhatsAppWebIntegration } from "@/components/WhatsAppWebIntegration";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   id: string;
@@ -41,14 +43,16 @@ interface Message {
 
 interface Conversation {
   id: string;
-  leadName: string;
-  leadEmail: string;
-  channel: 'website' | 'whatsapp' | 'facebook' | 'email';
+  title: string;
   status: 'active' | 'pending' | 'closed';
-  lastMessage: string;
-  lastActivity: Date;
-  unreadCount: number;
-  leadScore: number;
+  channel: 'website' | 'whatsapp' | 'facebook' | 'email';
+  last_message: string;
+  last_message_at: string;
+  created_at: string;
+  updated_at: string;
+  score: number;
+  participant_name?: string;
+  participant_identifier?: string;
 }
 
 const Conversations = () => {
@@ -56,58 +60,97 @@ const Conversations = () => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const conversations: Conversation[] = [
-    {
-      id: "1",
-      leadName: "Sarah Johnson",
-      leadEmail: "sarah@example.com",
-      channel: "website",
-      status: "active",
-      lastMessage: "What are your pricing plans?",
-      lastActivity: new Date(Date.now() - 5 * 60 * 1000), // 5 minutes ago
-      unreadCount: 2,
-      leadScore: 89
-    },
-    {
-      id: "2",
-      leadName: "Mike Chen",
-      leadEmail: "mike@example.com",
-      channel: "whatsapp",
-      status: "active",
-      lastMessage: "I'm interested in the enterprise plan",
-      lastActivity: new Date(Date.now() - 15 * 60 * 1000), // 15 minutes ago
-      unreadCount: 0,
-      leadScore: 76
-    },
-    {
-      id: "3",
-      leadName: "Emma Davis",
-      leadEmail: "emma@example.com",
-      channel: "facebook",
-      status: "pending",
-      lastMessage: "Can you send me more information?",
-      lastActivity: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-      unreadCount: 1,
-      leadScore: 92
-    },
-    {
-      id: "4",
-      leadName: "Alex Rodriguez",
-      leadEmail: "alex@example.com",
-      channel: "email",
-      status: "closed",
-      lastMessage: "Thank you for your help!",
-      lastActivity: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
-      unreadCount: 0,
-      leadScore: 64
+  // Fetch conversations from Supabase
+  const fetchConversations = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('conversations')
+        .select('*')
+        .order('last_message_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching conversations:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load conversations",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Transform the data to match our interface
+      const transformedConversations = data?.map(conv => ({
+        id: conv.id,
+        title: conv.title,
+        status: conv.status,
+        channel: conv.channel,
+        last_message: conv.last_message || 'No messages yet',
+        last_message_at: conv.last_message_at,
+        created_at: conv.created_at,
+        updated_at: conv.updated_at,
+        score: conv.score || 0,
+        participant_name: null, // Will be populated later if needed
+        participant_identifier: null, // Will be populated later if needed
+      })) || [];
+
+      setConversations(transformedConversations);
+    } catch (error) {
+      console.error('Error fetching conversations:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  // Fetch messages for a conversation
+  const fetchMessages = async (conversationId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('whatsapp_messages')
+        .select('*')
+        .eq('conversation_id', conversationId)
+        .order('created_at', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching messages:', error);
+        return;
+      }
+
+      // Transform messages to match our interface
+      const transformedMessages = data?.map(msg => ({
+        id: msg.id,
+        text: msg.message_text || '',
+        sender: msg.direction === 'inbound' ? 'user' : 'bot',
+        timestamp: new Date(msg.created_at),
+        status: msg.status,
+        channel: msg.message_type as any,
+      })) || [];
+
+      setMessages(transformedMessages);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
+  // Load conversations on component mount
+  useEffect(() => {
+    fetchConversations();
+  }, []);
+
+  // Load messages when conversation is selected
+  useEffect(() => {
+    if (selectedConversation) {
+      fetchMessages(selectedConversation.id);
+    }
+  }, [selectedConversation]);
 
   const handleSignOut = async () => {
     try {
@@ -200,7 +243,8 @@ const Conversations = () => {
     }
   };
 
-  const formatTime = (date: Date) => {
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     const minutes = Math.floor(diff / (1000 * 60));
@@ -214,9 +258,67 @@ const Conversations = () => {
   };
 
   const filteredConversations = conversations.filter(conv =>
-    conv.leadName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    conv.leadEmail.toLowerCase().includes(searchQuery.toLowerCase())
+    conv.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (conv.participant_name && conv.participant_name.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p>Loading conversations...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show empty state if no conversations
+  if (conversations.length === 0) {
+    return (
+      <div className="min-h-screen bg-background">
+        {/* Header */}
+        <header className="bg-card border-b border-border/20 sticky top-0 z-40">
+          <div className="px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate('/dashboard')}
+                  className="flex items-center space-x-2 text-muted-foreground hover:text-foreground"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span>Back to Dashboard</span>
+                </Button>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-200 to-amber-400 flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center">
+                      <div className="w-3.5 h-3.5 rounded-full bg-amber-800"></div>
+                    </div>
+                  </div>
+                  <span className="text-2xl font-bold text-foreground">FursaAI</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Empty State */}
+        <div className="flex items-center justify-center h-[calc(100vh-80px)]">
+          <div className="text-center">
+            <MessageSquare className="h-16 w-16 mx-auto mb-4 text-muted-foreground/50" />
+            <h3 className="text-lg font-medium mb-2">No conversations yet</h3>
+            <p className="text-muted-foreground mb-4">
+              Start by setting up your WhatsApp integration and sending a test message
+            </p>
+            <Button onClick={() => navigate('/dashboard')}>
+              Go to Dashboard
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -309,7 +411,7 @@ const Conversations = () => {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-foreground">Conversations</h2>
               <Badge className="bg-primary text-primary-foreground">
-                {conversations.filter(c => c.unreadCount > 0).length}
+                {conversations.length}
               </Badge>
             </div>
             
@@ -353,26 +455,21 @@ const Conversations = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-1">
                       <span className="font-medium text-foreground truncate">
-                        {conversation.leadName}
+                        {conversation.participant_name || conversation.title}
                       </span>
                       <Badge className={`text-xs ${getStatusColor(conversation.status)}`}>
                         {conversation.status}
                       </Badge>
                     </div>
                     <p className="text-sm text-muted-foreground truncate mb-1">
-                      {conversation.lastMessage}
+                      {conversation.last_message}
                     </p>
                     <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                       {getChannelIcon(conversation.channel)}
-                      <span>{formatTime(conversation.lastActivity)}</span>
-                      <span>• Score: {conversation.leadScore}</span>
+                      <span>{formatTime(conversation.last_message_at)}</span>
+                      <span>• Score: {conversation.score}</span>
                     </div>
                   </div>
-                  {conversation.unreadCount > 0 && (
-                    <Badge className="bg-primary text-primary-foreground text-xs">
-                      {conversation.unreadCount}
-                    </Badge>
-                  )}
                 </div>
               </div>
             ))}
@@ -389,15 +486,15 @@ const Conversations = () => {
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                       <span className="text-sm font-medium text-primary">
-                        {selectedConversation.leadName.split(' ').map(n => n[0]).join('')}
+                        {(selectedConversation.participant_name || selectedConversation.title).split(' ').map(n => n[0]).join('')}
                       </span>
                     </div>
                     <div>
-                      <h3 className="font-medium text-foreground">{selectedConversation.leadName}</h3>
+                      <h3 className="font-medium text-foreground">{selectedConversation.participant_name || selectedConversation.title}</h3>
                       <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                         {getChannelIcon(selectedConversation.channel)}
-                        <span>{selectedConversation.leadEmail}</span>
-                        <span>• Score: {selectedConversation.leadScore}</span>
+                        <span>{selectedConversation.participant_identifier || 'No contact info'}</span>
+                        <span>• Score: {selectedConversation.score}</span>
                       </div>
                     </div>
                   </div>
@@ -421,7 +518,7 @@ const Conversations = () => {
                         <div className="w-5 h-5 rounded-full bg-amber-800"></div>
                       </div>
                     </div>
-                    <p>Start a conversation with {selectedConversation.leadName}</p>
+                    <p>Start a conversation with {selectedConversation.participant_name || selectedConversation.title}</p>
                     <p className="text-sm">AI assistant is ready to help!</p>
                   </div>
                 )}
@@ -515,7 +612,18 @@ const Conversations = () => {
           </TabsContent>
 
           <TabsContent value="whatsapp" className="flex-1">
-            <WhatsAppIntegration />
+            <Tabs defaultValue="business" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="business">Business API</TabsTrigger>
+                <TabsTrigger value="web">WhatsApp Web</TabsTrigger>
+              </TabsList>
+              <TabsContent value="business" className="mt-4">
+                <WhatsAppIntegration />
+              </TabsContent>
+              <TabsContent value="web" className="mt-4">
+                <WhatsAppWebIntegration />
+              </TabsContent>
+            </Tabs>
           </TabsContent>
 
           <TabsContent value="analytics" className="flex-1">

@@ -3,6 +3,7 @@ CREATE TABLE public.whatsapp_integrations (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID NOT NULL,
   phone_number TEXT NOT NULL,
+  phone_number_id TEXT,
   business_name TEXT,
   webhook_url TEXT,
   n8n_webhook_token TEXT,

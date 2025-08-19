@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
+import { apiClient } from '@/lib/api-client';
 
 interface AuthContextType {
-  user: User | null;
-  session: Session | null;
+  user: any | null;
+  session: any | null;
   loading: boolean;
   signOut: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string, firstName?: string, lastName?: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,35 +25,64 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<any | null>(null);
+  const [session, setSession] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-      setUser(session?.user ?? null);
+    // Check for existing token
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      apiClient.setToken(token);
+      getProfile();
+    } else {
       setLoading(false);
-    };
-
-    getInitialSession();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      }
-    );
-
-    return () => subscription.unsubscribe();
+    }
   }, []);
 
+  const getProfile = async () => {
+    try {
+      const user = await apiClient.getProfile();
+      setUser(user);
+      setSession({ user });
+    } catch (error) {
+      console.error('Failed to get profile:', error);
+      localStorage.removeItem('auth_token');
+      apiClient.clearToken();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const login = async (email: string, password: string) => {
+    try {
+      const { access_token, user } = await apiClient.login(email, password);
+      localStorage.setItem('auth_token', access_token);
+      apiClient.setToken(access_token);
+      setUser(user);
+      setSession({ user });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const register = async (email: string, password: string, firstName?: string, lastName?: string) => {
+    try {
+      const { access_token, user } = await apiClient.register(email, password, firstName, lastName);
+      localStorage.setItem('auth_token', access_token);
+      apiClient.setToken(access_token);
+      setUser(user);
+      setSession({ user });
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const signOut = async () => {
-    await supabase.auth.signOut();
+    localStorage.removeItem('auth_token');
+    apiClient.clearToken();
+    setUser(null);
+    setSession(null);
   };
 
   const value = {
@@ -60,6 +90,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     session,
     loading,
     signOut,
+    login,
+    register,
   };
 
   return (

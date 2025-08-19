@@ -66,7 +66,7 @@ export const WhatsAppIntegration = () => {
             WhatsApp Integration
           </h3>
           <p className="text-sm text-muted-foreground">
-            Connect WhatsApp to receive and send messages through n8n workflows
+            Connect Twilio WhatsApp to receive and send AI-powered messages
           </p>
         </div>
         
@@ -81,7 +81,7 @@ export const WhatsAppIntegration = () => {
             <DialogHeader>
               <DialogTitle>Connect WhatsApp</DialogTitle>
               <DialogDescription>
-                Set up a new WhatsApp integration for your business.
+                Set up a new Twilio WhatsApp integration for your business. Enter your Twilio WhatsApp phone number.
               </DialogDescription>
             </DialogHeader>
             
@@ -215,21 +215,40 @@ export const WhatsAppIntegration = () => {
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
           <div className="space-y-2">
-            <p className="font-medium">1. Create WhatsApp Integration</p>
-            <p className="text-muted-foreground">Click "Connect WhatsApp" and provide your business phone number.</p>
+            <p className="font-medium">1. Twilio WhatsApp Setup</p>
+            <p className="text-muted-foreground">
+              Set up your Twilio credentials in Supabase environment variables:
+            </p>
+            <div className="bg-muted p-2 rounded text-xs font-mono">
+              TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx<br/>
+              TWILIO_AUTH_TOKEN=your_auth_token_here<br/>
+              TWILIO_WHATSAPP_NUMBER=whatsapp:+1234567890
+            </div>
           </div>
           
           <div className="space-y-2">
-            <p className="font-medium">2. Configure n8n Workflow</p>
+            <p className="font-medium">2. Create WhatsApp Integration</p>
+            <p className="text-muted-foreground">Click "Connect WhatsApp" and provide your Twilio WhatsApp phone number.</p>
+          </div>
+          
+          <div className="space-y-2">
+            <p className="font-medium">3. Configure Twilio Webhook</p>
             <p className="text-muted-foreground">
-              Use the webhook URL and token in your n8n workflow to receive and send WhatsApp messages.
+              Set up the webhook URL in your Twilio Console to point to your webhook receiver.
             </p>
           </div>
           
           <div className="space-y-2">
-            <p className="font-medium">3. Test Connection</p>
+            <p className="font-medium">4. Test Integration</p>
             <p className="text-muted-foreground">
-              Send a test message to verify the integration is working correctly.
+              Send test messages to your Twilio WhatsApp number to verify the integration is working.
+            </p>
+          </div>
+          
+          <div className="space-y-2">
+            <p className="font-medium">5. AI Auto-Reply (Optional)</p>
+            <p className="text-muted-foreground">
+              Set up n8n workflow for AI-powered auto-replies to incoming messages.
             </p>
           </div>
         </CardContent>

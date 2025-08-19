@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import SignIn from "./pages/SignIn";
+import SignUpTest from "./pages/SignUpTest";
 import Dashboard from "./pages/Dashboard";
 import Conversations from "./pages/Conversations";
 import Analytics from "./pages/Analytics";
@@ -25,22 +26,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/conversations" 
-              element={
-                <ProtectedRoute>
-                  <Conversations />
-                </ProtectedRoute>
-              } 
-            />
+            <Route path="/signuptest" element={<SignUpTest />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/conversations" element={<Conversations />} />
             <Route 
               path="/analytics" 
               element={
