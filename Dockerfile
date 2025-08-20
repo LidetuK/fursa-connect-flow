@@ -15,7 +15,7 @@ COPY backend/.npmrc ./
 # Install ALL dependencies (including dev dependencies for build)
 RUN npm ci --prefer-offline --no-audit
 
-# Copy backend source code
+# Copy backend source code (updated for Meta WhatsApp compliance)
 COPY backend/ ./
 
 # Build the application

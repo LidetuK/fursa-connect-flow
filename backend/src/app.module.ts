@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { WhatsAppModule } from './whatsapp/whatsapp.module';
 import { ConversationsModule } from './conversations/conversations.module';
 
+// Entity imports
 import { User } from './users/user.entity';
 import { Conversation } from './conversations/conversation.entity';
 import { Integration } from './integrations/integration.entity';
