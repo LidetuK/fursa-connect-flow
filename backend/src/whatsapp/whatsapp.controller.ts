@@ -96,7 +96,7 @@ export class WhatsAppController {
       
       // Save to database (implement your database logic here)
       // await this.whatsappService.saveOptIn(optInRecord);
-      
+
       return {
         success: true,
         message: 'Opt-in recorded successfully',
@@ -229,7 +229,7 @@ export class WhatsAppController {
   private async sendViaMetaAPI(to: string, message: string, templateId?: string): Promise<any> {
     // Implement Meta WhatsApp Business API call
     // This is where you'd make the actual API call to Meta
-    return {
+      return {
       messageId: `msg_${Date.now()}`,
       status: 'sent'
     };
