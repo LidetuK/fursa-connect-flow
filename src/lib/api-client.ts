@@ -196,6 +196,7 @@ export const conversationsApi = {
 // Message endpoints
 export const messagesApi = {
   getByConversation: (conversationId: string) => apiClient.request<any[]>(`/messages/conversation/${conversationId}`),
+  getN8nMessages: (conversationId: string) => apiClient.request<any[]>(`/conversations/${conversationId}/n8n-messages`),
   create: (data: any) => apiClient.request<any>('/messages', { method: 'POST', body: JSON.stringify(data) }),
   updateStatus: (id: string, status: string) => apiClient.request<any>(`/messages/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }),
   getById: (id: string) => apiClient.request<any>(`/messages/${id}`),

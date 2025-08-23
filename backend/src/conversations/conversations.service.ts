@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { Conversation } from './conversation.entity';
 import { Message } from '../messages/message.entity';
 
@@ -11,6 +11,7 @@ export class ConversationsService {
     private conversationsRepository: Repository<Conversation>,
     @InjectRepository(Message)
     private messagesRepository: Repository<Message>,
+    private dataSource: DataSource,
   ) {}
 
   async createConversation(conversationData: {
@@ -32,11 +33,94 @@ export class ConversationsService {
   }
 
   async getConversationsByUser(userId: string): Promise<Conversation[]> {
-    return this.conversationsRepository.find({
-      where: { userId: userId }, // Use explicit userId column
+    // Get regular conversations
+    const regularConversations = await this.conversationsRepository.find({
+      where: { userId: userId },
       relations: ['messages'],
       order: { lastMessageAt: 'DESC', createdAt: 'DESC' },
     });
+
+    // Get n8n conversations from chat_histories table
+    const n8nConversations = await this.getN8nConversations(userId);
+
+    // Combine and sort all conversations
+    const allConversations = [...regularConversations, ...n8nConversations];
+    return allConversations.sort((a, b) => {
+      const dateA = a.lastMessageAt || a.createdAt;
+      const dateB = b.lastMessageAt || b.createdAt;
+      return new Date(dateB).getTime() - new Date(dateA).getTime();
+    });
+  }
+
+  async getN8nConversations(userId: string): Promise<Conversation[]> {
+    try {
+      // Query the n8n_chat_histories table directly
+      const query = `
+        SELECT 
+          session_id as "participantPhone",
+          MAX(timestamp) as "lastMessageAt",
+          COUNT(*) as message_count
+        FROM n8n_chat_histories 
+        GROUP BY session_id 
+        ORDER BY MAX(timestamp) DESC
+      `;
+      
+      const n8nData = await this.dataSource.query(query);
+      
+      // Convert to Conversation format
+      return n8nData.map((row: any) => {
+        const conversation = new Conversation();
+        conversation.id = `n8n_${row.participantPhone}`; // Generate unique ID
+        conversation.title = `WhatsApp Chat - ${row.participantPhone}`;
+        conversation.status = 'active';
+        conversation.channel = 'whatsapp';
+        conversation.participantPhone = row.participantPhone;
+        conversation.participantName = `User ${row.participantPhone}`;
+        conversation.leadScore = 0;
+        conversation.lastMessageAt = row.lastMessageAt;
+        conversation.lastMessageContent = `Last message from ${row.participantPhone}`;
+        conversation.userId = userId;
+        conversation.createdAt = row.lastMessageAt;
+        conversation.updatedAt = row.lastMessageAt;
+        conversation.messages = []; // Will be populated separately if needed
+        return conversation;
+      });
+    } catch (error) {
+      console.error('Error fetching n8n conversations:', error);
+      return [];
+    }
+  }
+
+  async getN8nMessages(sessionId: string): Promise<Message[]> {
+    try {
+      const query = `
+        SELECT 
+          id,
+          session_id,
+          message,
+          timestamp
+        FROM n8n_chat_histories 
+        WHERE session_id = $1 
+        ORDER BY timestamp ASC
+      `;
+      
+      const n8nMessages = await this.dataSource.query(query, [sessionId]);
+      
+      return n8nMessages.map((row: any) => {
+        const message = new Message();
+        message.id = `n8n_${row.id}`;
+        message.content = row.message;
+        message.sender = row.session_id;
+        message.messageType = 'text';
+        message.status = 'delivered';
+        message.createdAt = row.timestamp;
+        message.updatedAt = row.timestamp;
+        return message;
+      });
+    } catch (error) {
+      console.error('Error fetching n8n messages:', error);
+      return [];
+    }
   }
 
   async getConversationById(conversationId: string, userId: string): Promise<Conversation> {

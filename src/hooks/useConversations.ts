@@ -95,8 +95,14 @@ export const useConversations = () => {
 
   const fetchMessages = useCallback(async (conversationId: string) => {
     try {
-      const data = await messagesApi.getByConversation(conversationId);
-      return data;
+      // Check if this is an n8n conversation
+      if (conversationId.startsWith('n8n_')) {
+        const data = await messagesApi.getN8nMessages(conversationId);
+        return data;
+      } else {
+        const data = await messagesApi.getByConversation(conversationId);
+        return data;
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch messages';
       toast({

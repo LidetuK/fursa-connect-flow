@@ -78,4 +78,14 @@ export class ConversationsController {
     }
     return this.conversationsService.deleteConversation(conversationId);
   }
+
+  @Get(':id/n8n-messages')
+  async getN8nMessages(@Param('id') conversationId: string, @Request() req: any) {
+    // Extract session_id from conversation ID (format: n8n_phoneNumber)
+    if (conversationId.startsWith('n8n_')) {
+      const sessionId = conversationId.replace('n8n_', '');
+      return this.conversationsService.getN8nMessages(sessionId);
+    }
+    throw new Error('Invalid conversation ID format for n8n messages');
+  }
 }
