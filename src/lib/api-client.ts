@@ -18,7 +18,7 @@ class ApiClient {
     this.token = null;
   }
 
-  private async request<T>(
+  async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
@@ -180,3 +180,33 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient(API_BASE_URL);
+
+// Conversation endpoints
+export const conversationsApi = {
+  getAll: () => apiClient.request<any[]>('/conversations'),
+  getById: (id: string) => apiClient.request<any>(`/conversations/${id}`),
+  getStats: () => apiClient.request<any>('/conversations/stats'),
+  create: (data: any) => apiClient.request<any>('/conversations', { method: 'POST', body: JSON.stringify(data) }),
+  update: (id: string, data: any) => apiClient.request<any>(`/conversations/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  updateScore: (id: string, score: number) => apiClient.request<any>(`/conversations/${id}/score`, { method: 'PUT', body: JSON.stringify({ score }) }),
+  updateIntent: (id: string, intent: string) => apiClient.request<any>(`/conversations/${id}/intent`, { method: 'PUT', body: JSON.stringify({ intent }) }),
+  delete: (id: string) => apiClient.request<void>(`/conversations/${id}`, { method: 'DELETE' }),
+};
+
+// Message endpoints
+export const messagesApi = {
+  getByConversation: (conversationId: string) => apiClient.request<any[]>(`/messages/conversation/${conversationId}`),
+  create: (data: any) => apiClient.request<any>('/messages', { method: 'POST', body: JSON.stringify(data) }),
+  updateStatus: (id: string, status: string) => apiClient.request<any>(`/messages/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }),
+  getById: (id: string) => apiClient.request<any>(`/messages/${id}`),
+  delete: (id: string) => apiClient.request<void>(`/messages/${id}`, { method: 'DELETE' }),
+};
+
+// WhatsApp endpoints
+export const whatsappApi = {
+  sendMessage: (data: any) => apiClient.request<any>('/whatsapp/send', { method: 'POST', body: JSON.stringify(data) }),
+  sendBotResponse: (data: any) => apiClient.request<any>('/whatsapp/bot-response', { method: 'POST', body: JSON.stringify(data) }),
+  updateScore: (conversationId: string, score: number) => apiClient.request<any>(`/whatsapp/update-score/${conversationId}`, { method: 'POST', body: JSON.stringify({ score }) }),
+  updateIntent: (conversationId: string, intent: string) => apiClient.request<any>(`/whatsapp/update-intent/${conversationId}`, { method: 'POST', body: JSON.stringify({ intent }) }),
+  getTemplates: () => apiClient.request<any[]>('/whatsapp/templates'),
+};

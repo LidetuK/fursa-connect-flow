@@ -27,17 +27,21 @@ import {
   Clock,
   Star,
   LogOut,
-  User
+  User,
+  Phone,
+  Mail
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useConversations } from "@/hooks/useConversations";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const { toast } = useToast();
   const [selectedTimeframe, setSelectedTimeframe] = useState("7d");
+  const { conversations, stats, loading } = useConversations();
 
   const handleSignOut = async () => {
     try {
@@ -56,29 +60,29 @@ const Dashboard = () => {
     }
   };
 
-  const stats = [
+  const dashboardStats = [
     {
-      title: "Leads Qualified",
-      value: "1,247",
+      title: "Total Conversations",
+      value: stats?.total?.toString() || "0",
       change: "+12.5%",
       trend: "up",
       icon: UserCheck,
       color: "text-primary"
     },
     {
-      title: "Revenue Generated",
-      value: "$184K",
+      title: "Active Conversations",
+      value: stats?.active?.toString() || "0",
       change: "+8.2%",
       trend: "up",
-      icon: DollarSign,
+      icon: MessageSquare,
       color: "text-green-600"
     },
     {
-      title: "Avg Response Time",
-      value: "1.8s",
-      change: "-15.3%",
-      trend: "down",
-      icon: MessageCircle,
+      title: "Avg Lead Score",
+      value: stats?.averageScore?.toFixed(1) || "0.0",
+      change: "+6.8%",
+      trend: "up",
+      icon: Target,
       color: "text-blue-600"
     },
     {
@@ -86,25 +90,44 @@ const Dashboard = () => {
       value: "34.2%",
       change: "+6.8%",
       trend: "up",
-      icon: Target,
+      icon: TrendingUp,
       color: "text-purple-600"
     }
   ];
 
-  const recentLeads = [
-    { name: "Sarah Johnson", email: "sarah@example.com", score: 89, status: "Hot", time: "2 min ago", channel: "Website" },
-    { name: "Mike Chen", email: "mike@example.com", score: 76, status: "Warm", time: "5 min ago", channel: "WhatsApp" },
-    { name: "Emma Davis", email: "emma@example.com", score: 92, status: "Hot", time: "8 min ago", channel: "Facebook" },
-    { name: "Alex Rodriguez", email: "alex@example.com", score: 64, status: "Cold", time: "12 min ago", channel: "Website" },
-    { name: "Lisa Wang", email: "lisa@example.com", score: 81, status: "Warm", time: "15 min ago", channel: "Instagram" }
-  ];
+  const recentConversations = conversations.slice(0, 5).map(conv => ({
+    name: conv.participantName || conv.title,
+    email: conv.participantEmail || conv.participantPhone || 'No contact info',
+    score: conv.leadScore,
+    status: conv.status === 'active' ? 'Hot' : conv.status === 'pending' ? 'Warm' : 'Cold',
+    time: conv.lastMessageAt ? formatTime(conv.lastMessageAt.toString()) : 'No messages',
+    channel: conv.channel,
+    intent: conv.intent || 'Unknown'
+  }));
 
-  const channelStats = [
-    { channel: "Website Chat", leads: 456, conversion: "28.5%", icon: Globe },
-    { channel: "WhatsApp", leads: 324, conversion: "42.1%", icon: MessageSquare },
-    { channel: "Facebook", leads: 289, conversion: "31.7%", icon: MessageCircle },
-    { channel: "Voice Calls", leads: 178, conversion: "55.3%", icon: Smartphone }
-  ];
+  const channelStats = Object.entries(stats?.channels || {}).map(([channel, count]) => ({
+    channel: channel.charAt(0).toUpperCase() + channel.slice(1),
+    leads: count,
+    conversion: "42.1%", // This would be calculated from actual data
+    icon: channel === 'whatsapp' ? MessageSquare : 
+          channel === 'website' ? Globe : 
+          channel === 'facebook' ? MessageCircle : 
+          channel === 'email' ? Mail : Smartphone
+  }));
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const minutes = Math.floor(diff / (1000 * 60));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    return `${days}d ago`;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -213,7 +236,7 @@ const Dashboard = () => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
+          {dashboardStats.map((stat, index) => (
             <Card key={index} className="bg-card border border-border/20 rounded-2xl hover:shadow-lg transition-all duration-300">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -301,22 +324,22 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* Recent Leads Table */}
+        {/* Recent Conversations Table */}
         <Card className="bg-card border border-border/20 rounded-2xl">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Recent Leads</CardTitle>
-                <CardDescription>Latest qualified leads and their status</CardDescription>
+                <CardTitle>Recent Conversations</CardTitle>
+                <CardDescription>Latest WhatsApp conversations and their status</CardDescription>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={() => navigate('/conversations')}>
                 View All
               </Button>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {recentLeads.map((lead, index) => (
+              {recentConversations.map((lead, index) => (
                 <div key={index} className="flex items-center justify-between p-4 bg-background/50 rounded-xl hover:bg-background/80 transition-colors">
                   <div className="flex items-center space-x-4">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -347,6 +370,7 @@ const Dashboard = () => {
                     <div className="text-right">
                       <div className="text-sm text-muted-foreground">{lead.channel}</div>
                       <div className="text-xs text-muted-foreground">{lead.time}</div>
+                      <div className="text-xs text-muted-foreground">Intent: {lead.intent}</div>
                     </div>
                     
                     <Button variant="ghost" size="sm">
