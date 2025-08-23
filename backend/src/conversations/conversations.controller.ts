@@ -88,4 +88,9 @@ export class ConversationsController {
     }
     throw new Error('Invalid conversation ID format for n8n messages');
   }
+
+  @Get('debug/n8n-table')
+  async debugN8nTable(@Request() req: any) {
+    return this.conversationsService.debugN8nTable();
+  }
 }

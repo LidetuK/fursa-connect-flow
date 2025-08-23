@@ -123,6 +123,40 @@ export class ConversationsService {
     }
   }
 
+  async debugN8nTable() {
+    try {
+      // Query all data from n8n_chat_histories table
+      const query = `
+        SELECT 
+          id,
+          session_id,
+          message,
+          timestamp,
+          message_type,
+          sender,
+          metadata
+        FROM n8n_chat_histories 
+        ORDER BY timestamp DESC
+        LIMIT 10
+      `;
+      
+      const n8nData = await this.dataSource.query(query);
+      
+      return {
+        tableName: 'n8n_chat_histories',
+        totalRecords: n8nData.length,
+        data: n8nData,
+        sampleRecord: n8nData[0] || null
+      };
+    } catch (error) {
+      console.error('Error debugging n8n table:', error);
+      return {
+        error: error.message,
+        tableName: 'n8n_chat_histories'
+      };
+    }
+  }
+
   async getConversationById(conversationId: string, userId: string): Promise<Conversation> {
     return this.conversationsRepository.findOne({
       where: { id: conversationId, userId: userId }, // Use explicit userId column
