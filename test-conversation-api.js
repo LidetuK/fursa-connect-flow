@@ -1,21 +1,21 @@
 // Test script to check conversation API directly
 // Run with: node test-conversation-api.js
 
-const https = require('https');
-const http = require('http');
+import https from 'https';
+import http from 'http';
 
 // Configuration
 const API_BASE_URL = 'https://fursa-connect-flow-production.up.railway.app/api';
-const USER_ID = '8f7dad15-a964-4ca9-a2a6-86d7f9ee53dd';
-const JWT_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJzdWIiOiI4ZjdkYWQxNS1hOTY0LTRjYTktYTJhNi04NmQ3ZjllZTUzZGQiLCJpYXQiOjE3NTU5NDA0MjQsImV4cCI6MTc1NjU0NTIyNH0.oHik31BebuR6g_a3BiJ-nVf5KWr1QmjxhBXASAEWp1Q';
+const USER_ID = 'de673ebb-531f-435b-a542-79e26cf78e50';
+const JWT_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQGV4YW1wbGUuY29tIiwic3ViIjoiZGU2NzNlYmItNTMxZi00MzViLWE1NDItNzllMjZjZjc4ZTUwIiwiaWF0IjoxNzU1OTc4MDUzLCJleHAiOjE3NTY1ODI4NTN9.VDoQwOHPZHu57T-6H8G1f49eCqbi3P_RJM5e_ivK4jI';
 
 // Function to make HTTP request
 function makeRequest(url, data = null, method = 'GET') {
   return new Promise((resolve, reject) => {
-    const urlObj = new URL(url);
-    const isHttps = urlObj.protocol === 'https:';
+    const isHttps = url.startsWith('https');
     const client = isHttps ? https : http;
     
+    const urlObj = new URL(url);
     const options = {
       hostname: urlObj.hostname,
       port: urlObj.port || (isHttps ? 443 : 80),
@@ -28,7 +28,8 @@ function makeRequest(url, data = null, method = 'GET') {
     };
 
     if (data) {
-      options.headers['Content-Length'] = Buffer.byteLength(JSON.stringify(data));
+      const postData = JSON.stringify(data);
+      options.headers['Content-Length'] = Buffer.byteLength(postData);
     }
 
     const req = client.request(options, (res) => {
@@ -39,18 +40,17 @@ function makeRequest(url, data = null, method = 'GET') {
       });
       
       res.on('end', () => {
+        let parsedData;
         try {
-          const parsedData = JSON.parse(responseData);
-          resolve({
-            statusCode: res.statusCode,
-            data: parsedData
-          });
-        } catch (error) {
-          resolve({
-            statusCode: res.statusCode,
-            data: responseData
-          });
+          parsedData = JSON.parse(responseData);
+        } catch (e) {
+          parsedData = responseData;
         }
+        
+        resolve({
+          statusCode: res.statusCode,
+          data: parsedData
+        });
       });
     });
 
@@ -61,6 +61,7 @@ function makeRequest(url, data = null, method = 'GET') {
     if (data) {
       req.write(JSON.stringify(data));
     }
+    
     req.end();
   });
 }
@@ -111,8 +112,4 @@ async function testConversationsAPI() {
 }
 
 // Run the test
-if (require.main === module) {
-  testConversationsAPI().catch(console.error);
-}
-
-module.exports = { testConversationsAPI, makeRequest };
+testConversationsAPI().catch(console.error);

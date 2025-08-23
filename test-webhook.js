@@ -1,64 +1,32 @@
-// Test script for WhatsApp webhook integration
+// Test script to send a webhook to the backend
 // Run with: node test-webhook.js
 
-const https = require('https');
-const http = require('http');
+import https from 'https';
+import http from 'http';
 
 // Configuration
-const WEBHOOK_URL = 'https://fursa-connect-flow-production.up.railway.app/api/whatsapp/webhook'; // Replace with your actual Railway URL
-const USER_ID = '8f7dad15-a964-4ca9-a2a6-86d7f9ee53dd'; // Your actual user ID from the login
-
-// Test data
-const testMessages = [
-  {
-    from: '+1234567890',
-    message: 'Hello, I\'m interested in your AI services',
-    messageType: 'text',
-    mediaUrl: null,
-    mediaType: null,
-    whatsappMessageId: 'msg_test_001',
-    userId: USER_ID,
-    senderName: 'John Doe'
-  },
-  {
-    from: '+1234567891',
-    message: 'Can you tell me more about your pricing?',
-    messageType: 'text',
-    mediaUrl: null,
-    mediaType: null,
-    whatsappMessageId: 'msg_test_002',
-    userId: USER_ID,
-    senderName: 'Jane Smith'
-  },
-  {
-    from: '+1234567892',
-    message: 'I need help with my current setup',
-    messageType: 'text',
-    mediaUrl: null,
-    mediaType: null,
-    whatsappMessageId: 'msg_test_003',
-    userId: USER_ID,
-    senderName: 'Mike Johnson'
-  }
-];
+const WEBHOOK_URL = 'https://fursa-connect-flow-production.up.railway.app/api/whatsapp/webhook';
+const USER_ID = 'de673ebb-531f-435b-a542-79e26cf78e50';
 
 // Function to make HTTP request
-function makeRequest(url, data) {
+function makeRequest(url, data, method = 'POST') {
   return new Promise((resolve, reject) => {
-    const urlObj = new URL(url);
-    const isHttps = urlObj.protocol === 'https:';
+    const isHttps = url.startsWith('https');
     const client = isHttps ? https : http;
     
+    const urlObj = new URL(url);
     const options = {
       hostname: urlObj.hostname,
       port: urlObj.port || (isHttps ? 443 : 80),
       path: urlObj.pathname + urlObj.search,
-      method: 'POST',
+      method: method,
       headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(JSON.stringify(data))
+        'Content-Type': 'application/json'
       }
     };
+
+    const postData = JSON.stringify(data);
+    options.headers['Content-Length'] = Buffer.byteLength(postData);
 
     const req = client.request(options, (res) => {
       let responseData = '';
@@ -68,18 +36,17 @@ function makeRequest(url, data) {
       });
       
       res.on('end', () => {
+        let parsedData;
         try {
-          const parsedData = JSON.parse(responseData);
-          resolve({
-            statusCode: res.statusCode,
-            data: parsedData
-          });
-        } catch (error) {
-          resolve({
-            statusCode: res.statusCode,
-            data: responseData
-          });
+          parsedData = JSON.parse(responseData);
+        } catch (e) {
+          parsedData = responseData;
         }
+        
+        resolve({
+          statusCode: res.statusCode,
+          data: parsedData
+        });
       });
     });
 
@@ -87,59 +54,46 @@ function makeRequest(url, data) {
       reject(error);
     });
 
-    req.write(JSON.stringify(data));
+    req.write(postData);
     req.end();
   });
 }
 
+// Test webhook data
+const webhookData = {
+  from: "251717835453",
+  message: "Test message from WhatsApp",
+  messageType: "text",
+  mediaUrl: null,
+  mediaType: null,
+  whatsappMessageId: "wamid.HBgMMjUxNzE3ODM1NDUzFQIAERgSNkRCRDU1NjYwNjc1NDZFOUZEAA==",
+  userId: USER_ID,
+  senderName: "WhatsApp User"
+};
+
 // Test function
 async function testWebhook() {
-  console.log('🚀 Starting WhatsApp webhook tests...\n');
-  
-  for (let i = 0; i < testMessages.length; i++) {
-    const message = testMessages[i];
-    console.log(`📨 Testing message ${i + 1}: ${message.message.substring(0, 50)}...`);
+  console.log('🚀 Testing WhatsApp Webhook...\n');
+  console.log('📤 Sending webhook data:', JSON.stringify(webhookData, null, 2));
+  console.log('');
+
+  try {
+    const response = await makeRequest(WEBHOOK_URL, webhookData);
     
-    try {
-      const response = await makeRequest(WEBHOOK_URL, message);
-      
-      if (response.statusCode === 200) {
-        console.log(`✅ Success! Status: ${response.statusCode}`);
-        console.log(`   Conversation ID: ${response.data.conversationId}`);
-        console.log(`   Message ID: ${response.data.messageId}`);
-      } else {
-        console.log(`❌ Error! Status: ${response.statusCode}`);
-        console.log(`   Response: ${JSON.stringify(response.data, null, 2)}`);
-      }
-    } catch (error) {
-      console.log(`❌ Request failed: ${error.message}`);
+    console.log('📥 Response Status:', response.statusCode);
+    console.log('📥 Response Data:', JSON.stringify(response.data, null, 2));
+    
+    if (response.statusCode === 200 || response.statusCode === 201) {
+      console.log('\n✅ Webhook sent successfully!');
+      console.log('🎯 Check your dashboard conversations page to see the new conversation.');
+    } else {
+      console.log('\n❌ Webhook failed!');
     }
     
-    console.log(''); // Empty line for readability
-    
-    // Wait 1 second between requests
-    if (i < testMessages.length - 1) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    }
+  } catch (error) {
+    console.log('❌ Request failed:', error.message);
   }
-  
-  console.log('🎉 Webhook testing completed!');
-  console.log('\n📋 Next steps:');
-  console.log('1. Check your dashboard for new conversations');
-  console.log('2. Verify the conversations appear in real-time');
-  console.log('3. Test the conversation details and messages');
 }
 
 // Run the test
-if (require.main === module) {
-  // Check if URL is configured
-  if (WEBHOOK_URL === 'https://your-backend-url.com/api/whatsapp/webhook') {
-    console.log('❌ Please update the WEBHOOK_URL in this script with your actual backend URL');
-    console.log('❌ Please update the USER_ID with your actual user ID');
-    process.exit(1);
-  }
-  
-  testWebhook().catch(console.error);
-}
-
-module.exports = { testWebhook, makeRequest };
+testWebhook().catch(console.error);

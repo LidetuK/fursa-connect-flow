@@ -1,12 +1,12 @@
 // Test script to verify n8n integration
 // Run with: node test-n8n-integration.js
 
-const https = require('https');
-const http = require('http');
+import https from 'https';
+import http from 'http';
 
 // Configuration
 const API_BASE_URL = 'https://fursa-connect-flow-production.up.railway.app/api';
-const JWT_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJzdWIiOiI4ZjdkYWQxNS1hOTY0LTRjYTktYTJhNi04NmQ3ZjllZTUzZGQiLCJpYXQiOjE3NTU5NDA0MjQsImV4cCI6MTc1NjU0NTIyNH0.oHik31BebuR6g_a3BiJ-nVf5KWr1QmjxhBXASAEWp1Q';
+const JWT_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQGV4YW1wbGUuY29tIiwic3ViIjoiZGU2NzNlYmItNTMxZi00MzViLWE1NDItNzllMjZjZjc4ZTUwIiwiaWF0IjoxNzU1OTc4MDUzLCJleHAiOjE3NTY1ODI4NTN9.VDoQwOHPZHu57T-6H8G1f49eCqbi3P_RJM5e_ivK4jI';
 
 // Function to make HTTP request
 function makeRequest(url, data = null, method = 'GET') {
@@ -110,8 +110,4 @@ async function testN8nIntegration() {
 }
 
 // Run the test
-if (require.main === module) {
-  testN8nIntegration().catch(console.error);
-}
-
-module.exports = { testN8nIntegration, makeRequest };
+testN8nIntegration().catch(console.error);
