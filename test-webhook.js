@@ -5,8 +5,8 @@ const https = require('https');
 const http = require('http');
 
 // Configuration
-const WEBHOOK_URL = 'https://your-backend-url.com/api/whatsapp/webhook'; // Replace with your actual URL
-const USER_ID = 'your-user-id-here'; // Replace with actual user ID
+const WEBHOOK_URL = 'https://fursa-connect-flow-production.up.railway.app/api/whatsapp/webhook'; // Replace with your actual Railway URL
+const USER_ID = '8f7dad15-a964-4ca9-a2a6-86d7f9ee53dd'; // Your actual user ID from the login
 
 // Test data
 const testMessages = [

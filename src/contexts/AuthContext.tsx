@@ -33,6 +33,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Check for existing token
     const token = localStorage.getItem('auth_token');
     if (token) {
+      console.log('🔑 JWT Token:', token);
+      console.log('📋 To decode: Go to https://jwt.io and paste the token above');
       apiClient.setToken(token);
       getProfile();
     } else {

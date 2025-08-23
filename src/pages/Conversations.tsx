@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { WhatsAppIntegration } from "@/components/WhatsAppIntegration";
+import { useConversations } from "@/hooks/useConversations";
 
 interface Message {
   id: string;
@@ -51,100 +52,68 @@ interface Conversation {
   score: number;
   participant_name?: string;
   participant_identifier?: string;
+  participantPhone?: string;
+  participantName?: string;
+  participantEmail?: string;
+  leadScore?: number;
+  intent?: string;
+  lastMessageAt?: string;
+  lastMessageContent?: string;
 }
 
 const Conversations = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const { toast } = useToast();
+  const { conversations: realConversations, fetchMessages, loading } = useConversations();
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
-  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Fetch conversations from backend API (mock data for now)
-  const fetchConversations = async () => {
+  // Transform real conversations to match the interface
+  const conversations = realConversations.map(conv => ({
+    id: conv.id,
+    title: conv.title,
+    status: conv.status as 'active' | 'pending' | 'closed',
+    channel: conv.channel as 'website' | 'whatsapp' | 'facebook' | 'email',
+    last_message: conv.lastMessageContent || 'No messages yet',
+    last_message_at: conv.lastMessageAt?.toISOString() || conv.createdAt.toISOString(),
+    created_at: conv.createdAt.toISOString(),
+    updated_at: conv.updatedAt.toISOString(),
+    score: conv.leadScore || 0,
+    participant_name: conv.participantName || conv.title,
+    participant_identifier: conv.participantPhone || conv.participantEmail || 'Unknown',
+    participantPhone: conv.participantPhone,
+    participantName: conv.participantName,
+    participantEmail: conv.participantEmail,
+    leadScore: conv.leadScore,
+    intent: conv.intent,
+    lastMessageAt: conv.lastMessageAt?.toISOString(),
+    lastMessageContent: conv.lastMessageContent
+  })) as Conversation[];
+
+  // Debug logging
+  console.log('🔍 Real conversations from hook:', realConversations);
+  console.log('🔍 Transformed conversations:', conversations);
+  console.log('🔍 Loading state:', loading);
+
+  // Fetch messages for a conversation using the hook
+  const fetchMessagesForConversation = async (conversationId: string) => {
     try {
-      setLoading(true);
-      // TODO: Replace with actual API call to backend
-      const mockConversations: Conversation[] = [
-        {
-          id: '1',
-          title: 'Lead Inquiry - John Doe',
-          status: 'active',
-          channel: 'whatsapp',
-          last_message: 'Hi, I\'m interested in your services',
-          last_message_at: new Date().toISOString(),
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          score: 85,
-          participant_name: 'John Doe',
-          participant_identifier: '+1234567890'
-        },
-        {
-          id: '2',
-          title: 'Support Request - Jane Smith',
-          status: 'pending',
-          channel: 'website',
-          last_message: 'I need help with my account',
-          last_message_at: new Date(Date.now() - 3600000).toISOString(),
-          created_at: new Date(Date.now() - 7200000).toISOString(),
-          updated_at: new Date(Date.now() - 3600000).toISOString(),
-          score: 65,
-          participant_name: 'Jane Smith',
-          participant_identifier: 'jane@example.com'
-        }
-      ];
-
-      setConversations(mockConversations);
-    } catch (error) {
-      console.error('Error fetching conversations:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load conversations",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch messages for a conversation (mock data for now)
-  const fetchMessages = async (conversationId: string) => {
-    try {
-      // TODO: Replace with actual API call to backend
-      const mockMessages: Message[] = [
-        {
-          id: '1',
-          text: 'Hi, I\'m interested in your services',
-          sender: 'user',
-          timestamp: new Date(Date.now() - 300000),
-          status: 'read',
-          channel: 'whatsapp'
-        },
-        {
-          id: '2',
-          text: 'Hello! Thank you for reaching out. I\'d be happy to help you with our services. What specific information are you looking for?',
-          sender: 'bot',
-          timestamp: new Date(Date.now() - 240000),
-          status: 'delivered',
-          channel: 'whatsapp'
-        },
-        {
-          id: '3',
-          text: 'I\'m looking for AI-powered lead generation solutions',
-          sender: 'user',
-          timestamp: new Date(Date.now() - 180000),
-          status: 'read',
-          channel: 'whatsapp'
-        }
-      ];
-
-      setMessages(mockMessages);
+      const messagesData = await fetchMessages(conversationId);
+      // Transform messages to match the interface
+      const transformedMessages: Message[] = messagesData.map(msg => ({
+        id: msg.id,
+        text: msg.content,
+        sender: msg.sender as 'user' | 'bot',
+        timestamp: new Date(msg.createdAt),
+        status: msg.status as 'sent' | 'delivered' | 'read',
+        channel: selectedConversation?.channel || 'whatsapp'
+      }));
+      setMessages(transformedMessages);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
@@ -152,13 +121,13 @@ const Conversations = () => {
 
   // Load conversations on component mount
   useEffect(() => {
-    fetchConversations();
+    // Conversations are automatically loaded by the useConversations hook
   }, []);
 
   // Load messages when conversation is selected
   useEffect(() => {
     if (selectedConversation) {
-      fetchMessages(selectedConversation.id);
+      fetchMessagesForConversation(selectedConversation.id);
     }
   }, [selectedConversation]);
 

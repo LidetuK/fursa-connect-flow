@@ -49,6 +49,9 @@ export class Conversation {
   @Column({ nullable: true })
   metadata?: string; // JSON string for additional data
 
+  @Column()
+  userId: string; // Add explicit userId column
+
   @ManyToOne(() => User, user => user.conversations)
   user: User;
 

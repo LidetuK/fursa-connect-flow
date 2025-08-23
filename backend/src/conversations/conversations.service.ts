@@ -24,13 +24,16 @@ export class ConversationsService {
     whatsappConversationId?: string;
     metadata?: any;
   }): Promise<Conversation> {
-    const conversation = this.conversationsRepository.create(conversationData);
+    const conversation = this.conversationsRepository.create({
+      ...conversationData,
+      user: { id: conversationData.userId } // Establish the relationship properly
+    });
     return this.conversationsRepository.save(conversation);
   }
 
   async getConversationsByUser(userId: string): Promise<Conversation[]> {
     return this.conversationsRepository.find({
-      where: { user: { id: userId } },
+      where: { userId: userId }, // Use explicit userId column
       relations: ['messages'],
       order: { lastMessageAt: 'DESC', createdAt: 'DESC' },
     });
@@ -38,7 +41,7 @@ export class ConversationsService {
 
   async getConversationById(conversationId: string, userId: string): Promise<Conversation> {
     return this.conversationsRepository.findOne({
-      where: { id: conversationId, user: { id: userId } },
+      where: { id: conversationId, userId: userId }, // Use explicit userId column
       relations: ['messages'],
     });
   }
