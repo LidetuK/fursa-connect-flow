@@ -17,6 +17,7 @@ export class ConversationsService {
     title: string;
     userId: string;
     channel: string;
+    status?: string;
     participantPhone?: string;
     participantName?: string;
     participantEmail?: string;
