@@ -107,10 +107,24 @@ export class ConversationsService {
       const n8nMessages = await this.dataSource.query(query, [sessionId]);
       
       return n8nMessages.map((row: any) => {
+        // Parse the JSON message to extract content and type
+        let messageContent = '';
+        let messageType = 'text';
+        let sender = 'user';
+        
+        try {
+          const messageData = JSON.parse(row.message);
+          messageContent = messageData.content || 'No content';
+          messageType = messageData.type === 'human' ? 'user' : 'bot';
+          sender = messageData.type === 'human' ? 'user' : 'bot';
+        } catch (e) {
+          messageContent = row.message || 'Invalid message format';
+        }
+        
         const message = new Message();
         message.id = `n8n_${row.id}`;
-        message.content = row.message;
-        message.sender = row.session_id;
+        message.content = messageContent;
+        message.sender = sender;
         message.messageType = 'text';
         message.status = 'delivered';
         message.createdAt = row.timestamp;
@@ -142,11 +156,31 @@ export class ConversationsService {
       
       const n8nData = await this.dataSource.query(query);
       
+      // Parse the JSON messages to show content
+      const parsedData = n8nData.map((row: any) => {
+        let parsedMessage = null;
+        try {
+          parsedMessage = JSON.parse(row.message);
+        } catch (e) {
+          parsedMessage = { error: 'Invalid JSON', raw: row.message };
+        }
+        
+        return {
+          id: row.id,
+          session_id: row.session_id,
+          message_type: parsedMessage?.type || 'unknown',
+          content: parsedMessage?.content || 'No content',
+          timestamp: row.timestamp,
+          raw_message: row.message
+        };
+      });
+      
       return {
         tableName: 'n8n_chat_histories',
         totalRecords: n8nData.length,
-        data: n8nData,
-        sampleRecord: n8nData[0] || null
+        data: parsedData,
+        sampleRecord: parsedData[0] || null,
+        uniqueSessions: [...new Set(n8nData.map((row: any) => row.session_id))]
       };
     } catch (error) {
       console.error('Error debugging n8n table:', error);
