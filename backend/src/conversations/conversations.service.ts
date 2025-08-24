@@ -58,11 +58,11 @@ export class ConversationsService {
       const query = `
         SELECT 
           session_id as "participantPhone",
-          MAX(timestamp) as "lastMessageAt",
+          MAX(id) as "lastMessageId",
           COUNT(*) as message_count
         FROM n8n_chat_histories 
         GROUP BY session_id 
-        ORDER BY MAX(timestamp) DESC
+        ORDER BY MAX(id) DESC
       `;
       
       const n8nData = await this.dataSource.query(query);
@@ -77,11 +77,11 @@ export class ConversationsService {
         conversation.participantPhone = row.participantPhone;
         conversation.participantName = `User ${row.participantPhone}`;
         conversation.leadScore = 0;
-        conversation.lastMessageAt = row.lastMessageAt;
+        conversation.lastMessageAt = new Date(); // Use current date since no timestamp column
         conversation.lastMessageContent = `Last message from ${row.participantPhone}`;
         conversation.userId = userId;
-        conversation.createdAt = row.lastMessageAt;
-        conversation.updatedAt = row.lastMessageAt;
+        conversation.createdAt = new Date();
+        conversation.updatedAt = new Date();
         conversation.messages = []; // Will be populated separately if needed
         return conversation;
       });
@@ -97,11 +97,10 @@ export class ConversationsService {
         SELECT 
           id,
           session_id,
-          message,
-          timestamp
+          message
         FROM n8n_chat_histories 
         WHERE session_id = $1 
-        ORDER BY timestamp ASC
+        ORDER BY id ASC
       `;
       
       const n8nMessages = await this.dataSource.query(query, [sessionId]);
@@ -127,8 +126,8 @@ export class ConversationsService {
         message.sender = sender;
         message.messageType = 'text';
         message.status = 'delivered';
-        message.createdAt = row.timestamp;
-        message.updatedAt = row.timestamp;
+        message.createdAt = new Date(); // Use current date since no timestamp column
+        message.updatedAt = new Date();
         return message;
       });
     } catch (error) {
@@ -139,18 +138,24 @@ export class ConversationsService {
 
   async debugN8nTable() {
     try {
-      // Query all data from n8n_chat_histories table
+      // First, let's check the table structure
+      const structureQuery = `
+        SELECT column_name, data_type 
+        FROM information_schema.columns 
+        WHERE table_name = 'n8n_chat_histories' 
+        ORDER BY ordinal_position
+      `;
+      
+      const tableStructure = await this.dataSource.query(structureQuery);
+      
+      // Now query with the correct column names
       const query = `
         SELECT 
           id,
           session_id,
-          message,
-          timestamp,
-          message_type,
-          sender,
-          metadata
+          message
         FROM n8n_chat_histories 
-        ORDER BY timestamp DESC
+        ORDER BY id DESC
         LIMIT 10
       `;
       
@@ -170,13 +175,13 @@ export class ConversationsService {
           session_id: row.session_id,
           message_type: parsedMessage?.type || 'unknown',
           content: parsedMessage?.content || 'No content',
-          timestamp: row.timestamp,
           raw_message: row.message
         };
       });
       
       return {
         tableName: 'n8n_chat_histories',
+        tableStructure: tableStructure,
         totalRecords: n8nData.length,
         data: parsedData,
         sampleRecord: parsedData[0] || null,
