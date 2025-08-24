@@ -106,18 +106,18 @@ export class ConversationsService {
       const n8nMessages = await this.dataSource.query(query, [sessionId]);
       
       return n8nMessages.map((row: any) => {
-        // Parse the JSON message to extract content and type
         let messageContent = '';
-        let messageType = 'text';
         let sender = 'user';
-        
-        try {
-          const messageData = JSON.parse(row.message);
+
+        // row.message is already a JavaScript object because it's a jsonb column
+        const messageData = row.message;
+
+        if (messageData && typeof messageData === 'object') {
           messageContent = messageData.content || 'No content';
-          messageType = messageData.type === 'human' ? 'user' : 'bot';
           sender = messageData.type === 'human' ? 'user' : 'bot';
-        } catch (e) {
-          messageContent = row.message || 'Invalid message format';
+        } else {
+          // Fallback if for some reason it's not an object (e.g., plain text in old records)
+          messageContent = String(row.message) || 'Invalid message format';
         }
         
         const message = new Message();
@@ -165,7 +165,7 @@ export class ConversationsService {
       const parsedData = n8nData.map((row: any) => {
         let parsedMessage = null;
         try {
-          parsedMessage = JSON.parse(row.message);
+          parsedMessage = row.message; // Already an object from jsonb
         } catch (e) {
           parsedMessage = { error: 'Invalid JSON', raw: row.message };
         }
@@ -175,7 +175,7 @@ export class ConversationsService {
           session_id: row.session_id,
           message_type: parsedMessage?.type || 'unknown',
           content: parsedMessage?.content || 'No content',
-          raw_message: row.message
+          raw_message: JSON.stringify(row.message) // Stringify for display if it's an object
         };
       });
       

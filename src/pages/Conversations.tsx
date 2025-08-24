@@ -74,26 +74,36 @@ const Conversations = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Transform real conversations to match the interface
-  const conversations = realConversations.map(conv => ({
-    id: conv.id,
-    title: conv.title,
-    status: conv.status as 'active' | 'pending' | 'closed',
-    channel: conv.channel as 'website' | 'whatsapp' | 'facebook' | 'email',
-    last_message: conv.lastMessageContent || 'No messages yet',
-    last_message_at: conv.lastMessageAt?.toISOString() || conv.createdAt.toISOString(),
-    created_at: conv.createdAt.toISOString(),
-    updated_at: conv.updatedAt.toISOString(),
-    score: conv.leadScore || 0,
-    participant_name: conv.participantName || conv.title,
-    participant_identifier: conv.participantPhone || conv.participantEmail || 'Unknown',
-    participantPhone: conv.participantPhone,
-    participantName: conv.participantName,
-    participantEmail: conv.participantEmail,
-    leadScore: conv.leadScore,
-    intent: conv.intent,
-    lastMessageAt: conv.lastMessageAt?.toISOString(),
-    lastMessageContent: conv.lastMessageContent
-  })) as Conversation[];
+  const conversations = realConversations.map(conv => {
+    // Helper function to safely convert to ISO string
+    const toISOString = (date: any) => {
+      if (!date) return new Date().toISOString();
+      if (typeof date === 'string') return date;
+      if (date instanceof Date) return date.toISOString();
+      return new Date(date).toISOString();
+    };
+
+    return {
+      id: conv.id,
+      title: conv.title,
+      status: conv.status as 'active' | 'pending' | 'closed',
+      channel: conv.channel as 'website' | 'whatsapp' | 'facebook' | 'email',
+      last_message: conv.lastMessageContent || 'No messages yet',
+      last_message_at: toISOString(conv.lastMessageAt) || toISOString(conv.createdAt),
+      created_at: toISOString(conv.createdAt),
+      updated_at: toISOString(conv.updatedAt),
+      score: conv.leadScore || 0,
+      participant_name: conv.participantName || conv.title,
+      participant_identifier: conv.participantPhone || conv.participantEmail || 'Unknown',
+      participantPhone: conv.participantPhone,
+      participantName: conv.participantName,
+      participantEmail: conv.participantEmail,
+      leadScore: conv.leadScore,
+      intent: conv.intent,
+      lastMessageAt: toISOString(conv.lastMessageAt),
+      lastMessageContent: conv.lastMessageContent
+    };
+  }) as Conversation[];
 
   // Debug logging
   console.log('🔍 Real conversations from hook:', realConversations);
@@ -105,14 +115,23 @@ const Conversations = () => {
     try {
       const messagesData = await fetchMessages(conversationId);
       // Transform messages to match the interface
-      const transformedMessages: Message[] = messagesData.map(msg => ({
-        id: msg.id,
-        text: msg.content,
-        sender: msg.sender as 'user' | 'bot',
-        timestamp: new Date(msg.createdAt),
-        status: msg.status as 'sent' | 'delivered' | 'read',
-        channel: selectedConversation?.channel || 'whatsapp'
-      }));
+      const transformedMessages: Message[] = messagesData.map(msg => {
+        // Helper function to safely convert to Date
+        const toDate = (date: any) => {
+          if (!date) return new Date();
+          if (date instanceof Date) return date;
+          return new Date(date);
+        };
+
+        return {
+          id: msg.id,
+          text: msg.content,
+          sender: msg.sender as 'user' | 'bot',
+          timestamp: toDate(msg.createdAt),
+          status: msg.status as 'sent' | 'delivered' | 'read',
+          channel: selectedConversation?.channel || 'whatsapp'
+        };
+      });
       setMessages(transformedMessages);
     } catch (error) {
       console.error('Error fetching messages:', error);
